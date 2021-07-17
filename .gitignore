@@ -67,3 +67,8 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+
+# Diretorios ou arquivo personalizados
+dcu
+Win32
+Win64
