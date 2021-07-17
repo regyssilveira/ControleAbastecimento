@@ -109,11 +109,23 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="datamodule.conexao.pas">
-            <Form>DataModule1</Form>
+            <Form>DtmConexao</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="classes\configuracao.aplicativo.pas"/>
+        <DCCReference Include="classes\orm.simple.atributes.pas"/>
+        <DCCReference Include="models\abastecimento.model.pas"/>
+        <DCCReference Include="models\bomba.model.pas"/>
+        <DCCReference Include="models\tanque.model.pas"/>
+        <DCCReference Include="dao\base.DAO.pas"/>
+        <DCCReference Include="dao\tanque.DAO.pas"/>
+        <DCCReference Include="dao\bomba.DAO.pas"/>
+        <DCCReference Include="dao\abastecimento.DAO.pas"/>
+        <DCCReference Include="controllers\abastecimento.controller.pas"/>
+        <DCCReference Include="controllers\tanque.controller.pas"/>
+        <DCCReference Include="controllers\bomba.controller.pas"/>
+        <DCCReference Include="models\base.model.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

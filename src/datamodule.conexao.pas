@@ -3,7 +3,7 @@ unit datamodule.conexao;
 interface
 
 uses
-  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  System.SysUtils, System.Classes, FireDAC.DApt, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
   Data.DB, FireDAC.Comp.Client, FireDAC.Stan.ExprFuncs,
@@ -12,7 +12,7 @@ uses
   FireDAC.Comp.UI;
 
 type
-  TDataModule1 = class(TDataModule)
+  TDtmConexao = class(TDataModule)
     FDConnection1: TFDConnection;
     FDPhysSQLiteDriverLink1: TFDPhysSQLiteDriverLink;
     FDGUIxErrorDialog1: TFDGUIxErrorDialog;
@@ -28,7 +28,7 @@ type
   end;
 
 var
-  DataModule1: TDataModule1;
+  DtmConexao: TDtmConexao;
 
 implementation
 
@@ -37,17 +37,39 @@ implementation
 {$R *.dfm}
 
 uses
-  System.IOUtils;
+  System.IOUtils,
+  bomba.DAO, tanque.DAO, abastecimento.DAO,
+  abastecimento.model, bomba.model, tanque.model;
 
-// metodo para verficar e criar as tabelas existentes no banco
-procedure TDataModule1.VerificarEConstruirBanco;
+// metodo para verficar e criar as tabelas se não existirem no banco
+// não entrei no nível de checar campos e tudo o mais para não complicar demais
+// o aplicativo, é mais uma forma de mostra o uso do RTTI para esse fim
+procedure TDtmConexao.VerificarEConstruirBanco;
+var
+  Tabelas: TStringList;
 begin
+  Tabelas := TStringList.Create;
+  try
+    FDConnection1.GetTableNames('', '', '', Tabelas);
 
+    if Tabelas.IndexOf(TTanqueDAO.GetTableName<TTanque>) < 0 then
+      FDConnection1.ExecSQL(TTanqueDAO.GetSQLCreateTable<TTanque>);
+
+    if Tabelas.IndexOf(TBombaDAO.GetTableName<TBomba>) < 0 then
+      FDConnection1.ExecSQL(TBombaDAO.GetSQLCreateTable<TBomba>);
+
+    if Tabelas.IndexOf(TAbastecimentoDAO.GetTableName<TAbastecimento>) < 0 then
+      FDConnection1.ExecSQL(TAbastecimentoDAO.GetSQLCreateTable<TAbastecimento>);
+
+    FDConnection1.Close;
+  finally
+    Tabelas.Free;
+  end;
 end;
 
 // não utilizei pool de conexões por ter optado pelo SQLite, que
 // resumidamente implica no funcionamento stand-alone da aplicação
-procedure TDataModule1.FDConnection1BeforeConnect(Sender: TObject);
+procedure TDtmConexao.FDConnection1BeforeConnect(Sender: TObject);
 var
   DatabaseFolder: string;
   DatabasePath: string;
@@ -64,7 +86,7 @@ begin
   FDConnection1.Params.Database := DatabasePath;
 end;
 
-procedure TDataModule1.DataModuleCreate(Sender: TObject);
+procedure TDtmConexao.DataModuleCreate(Sender: TObject);
 begin
   VerificarEConstruirBanco;
 
