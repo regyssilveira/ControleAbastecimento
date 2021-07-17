@@ -72,3 +72,4 @@ modules/
 dcu
 Win32
 Win64
+*.skincfg
