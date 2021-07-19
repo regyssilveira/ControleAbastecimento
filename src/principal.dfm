@@ -26,47 +26,37 @@ object FrmPrincipal: TFrmPrincipal
     Caption = 'PnlMenu'
     ShowCaption = False
     TabOrder = 0
-    ExplicitLeft = 70
-    ExplicitTop = 135
-    ExplicitHeight = 276
     object Button1: TButton
       AlignWithMargins = True
       Left = 3
       Top = 3
       Width = 179
-      Height = 55
+      Height = 40
       Action = ActAbastecimento
       Align = alTop
       TabOrder = 0
-      ExplicitLeft = 5
-      ExplicitTop = 8
-      ExplicitWidth = 180
     end
     object Button2: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 64
+      Top = 49
       Width = 179
-      Height = 55
+      Height = 40
       Action = ActBomba
       Align = alTop
       TabOrder = 1
-      ExplicitLeft = 5
-      ExplicitTop = 69
-      ExplicitWidth = 180
+      ExplicitTop = 39
     end
     object Button3: TButton
       AlignWithMargins = True
       Left = 3
-      Top = 125
+      Top = 95
       Width = 179
-      Height = 55
+      Height = 40
       Action = ActTanque
       Align = alTop
       TabOrder = 2
-      ExplicitLeft = 5
-      ExplicitTop = 130
-      ExplicitWidth = 180
+      ExplicitTop = 75
     end
   end
   object PnlClient: TPanel
@@ -79,10 +69,6 @@ object FrmPrincipal: TFrmPrincipal
     Caption = 'PnlClient'
     ShowCaption = False
     TabOrder = 1
-    ExplicitLeft = 350
-    ExplicitTop = 250
-    ExplicitWidth = 185
-    ExplicitHeight = 41
   end
   object ActionManager1: TActionManager
     ActionBars = <

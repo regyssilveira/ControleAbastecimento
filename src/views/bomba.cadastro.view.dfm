@@ -9,13 +9,18 @@ inherited FrmBombaCadastroView: TFrmBombaCadastroView
   inherited Panel1: TPanel
     Top = 243
     Width = 441
+    ExplicitTop = 243
+    ExplicitWidth = 441
     inherited BtnGravar: TButton
       Left = 288
+      ExplicitLeft = 288
     end
   end
   inherited PgcCadastro: TPageControl
     Width = 435
     Height = 237
+    ExplicitWidth = 435
+    ExplicitHeight = 237
     inherited TbsDadosCadastrais: TTabSheet
       ExplicitWidth = 427
       ExplicitHeight = 209

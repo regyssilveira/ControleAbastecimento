@@ -136,7 +136,7 @@ end;
 
 procedure TFrmBaseConsultaView.ActRegistroAlterarExecute(Sender: TObject);
 begin
-  CadastroView.ShowAlteracao()(Self, FConsultaDAO);
+  CadastroView.ShowAlteracao(Self, FConsultaDAO);
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroApagarExecute(Sender: TObject);

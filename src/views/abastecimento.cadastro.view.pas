@@ -4,7 +4,7 @@ interface
 
 uses
   base.cadastro.view,
-  orm.simple.atributes,
+  orm.atributes,
 
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,

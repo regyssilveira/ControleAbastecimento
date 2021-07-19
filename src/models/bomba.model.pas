@@ -4,21 +4,21 @@ interface
 
 uses
   base.model,
-  orm.simple.atributes;
+  orm.atributes;
 
 type
   [TTabela('BOMBA')]
   TBombaModel = class(TBaseModel)
   private
-    FID: string;
-    FIdTanque: string;
+    FID: Integer;
+    FIdTanque: Integer;
     FDescricao: string;
   public
     [TCampo('id', 'Id da Bomba', True, False), TPk, TNotNull]
-    property Id: string read FID write FID;
+    property Id: Integer read FID write FID;
 
     [TCampo('id_tanque', 'Id do Tanque', True, True), TNotNull]
-    property IdTanque: string read FIdTanque write FIdTanque;
+    property IdTanque: Integer read FIdTanque write FIdTanque;
 
     [TCampo('descricao', 'Descrição da Bomba', True, True), TNotNull]
     property Descricao: string read FDescricao write FDescricao;

@@ -61,7 +61,7 @@ type
 implementation
 
 uses
-  orm.simple.atributes,
+  orm.atributes,
   System.RTTI;
 
 { TBaseDAO }

@@ -5,7 +5,7 @@ uses
   principal in 'principal.pas' {FrmPrincipal},
   datamodule.conexao in 'datamodule.conexao.pas' {DtmConexao: TDataModule},
   configuracao.aplicativo in 'classes\configuracao.aplicativo.pas',
-  orm.simple.atributes in 'classes\orm.simple.atributes.pas',
+  orm.atributes in 'classes\orm.atributes.pas',
   abastecimento.model in 'models\abastecimento.model.pas',
   bomba.model in 'models\bomba.model.pas',
   tanque.model in 'models\tanque.model.pas',
@@ -24,7 +24,8 @@ uses
   bomba.cadastro.view in 'views\bomba.cadastro.view.pas' {FrmBombaCadastroView},
   bomba.consulta.view in 'views\bomba.consulta.view.pas' {FrmBombaConsultaView},
   tanque.cadastro.view in 'views\tanque.cadastro.view.pas' {FrmTanqueCadastroView},
-  tanque.consulta.view in 'views\tanque.consulta.view.pas' {FrmTanqueConsultaView};
+  tanque.consulta.view in 'views\tanque.consulta.view.pas' {FrmTanqueConsultaView},
+  orm.utils in 'classes\orm.utils.pas';
 
 {$R *.res}
 

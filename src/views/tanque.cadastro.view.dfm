@@ -9,13 +9,18 @@ inherited FrmTanqueCadastroView: TFrmTanqueCadastroView
   inherited Panel1: TPanel
     Top = 247
     Width = 329
+    ExplicitTop = 247
+    ExplicitWidth = 329
     inherited BtnGravar: TButton
       Left = 176
+      ExplicitLeft = 176
     end
   end
   inherited PgcCadastro: TPageControl
     Width = 323
     Height = 241
+    ExplicitWidth = 323
+    ExplicitHeight = 241
     inherited TbsDadosCadastrais: TTabSheet
       ExplicitWidth = 315
       ExplicitHeight = 213

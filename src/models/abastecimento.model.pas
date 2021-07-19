@@ -4,25 +4,25 @@ interface
 
 uses
   base.model,
-  orm.simple.atributes;
+  orm.atributes;
 
 type
   [TTabela('ABASTECIMENTO')]
   TAbastecimentoModel = class(TBaseModel)
   private
+    FId: Integer;
+    FIdBomba: Integer;
+    FDataAbastecimento: TDateTime;
+    FQuantidadeLitros: Double;
+    FValorAbastecido: Double;
     FValorImposto: Double;
     FValorUnitario: Double;
-    FQuantidadeLitros: Double;
-    FId: string;
-    FIdBomba: string;
-    FValorAbastecido: Double;
-    FDataAbastecimento: TDateTime;
   public
     [TCampo('id', 'Id'), TPk, TNotNull]
-    property Id: string read FId write FId;
+    property Id: Integer read FId write FId;
 
     [TCampo('id_bomba', 'Bomba', True, True), TNotNull]
-    property IdBomba: string read FIdBomba write FIdBomba;
+    property IdBomba: Integer read FIdBomba write FIdBomba;
 
     [TCampo('dt_abastecimento', 'Data', True, True, 'dd/mm/yyyy'), TNotNull]
     property DataAbastecimento: TDateTime read FDataAbastecimento write FDataAbastecimento;

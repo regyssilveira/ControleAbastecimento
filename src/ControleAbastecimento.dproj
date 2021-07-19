@@ -114,7 +114,7 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="classes\configuracao.aplicativo.pas"/>
-        <DCCReference Include="classes\orm.simple.atributes.pas"/>
+        <DCCReference Include="classes\orm.atributes.pas"/>
         <DCCReference Include="models\abastecimento.model.pas"/>
         <DCCReference Include="models\bomba.model.pas"/>
         <DCCReference Include="models\tanque.model.pas"/>
@@ -158,6 +158,7 @@
             <Form>FrmTanqueConsultaView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="classes\orm.utils.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
