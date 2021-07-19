@@ -131,17 +131,25 @@ end;
 
 procedure TFrmBaseConsultaView.ActRegistroNovoExecute(Sender: TObject);
 begin
-  //
+  CadastroView.ShowCadastro(Self, FConsultaDAO);
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroAlterarExecute(Sender: TObject);
 begin
-  //
+  CadastroView.ShowAlteracao()(Self, FConsultaDAO);
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroApagarExecute(Sender: TObject);
 begin
-  //
+  if Application.MessageBox(
+    'Deseja realmente apagar o registro escolhido?',
+    'Apagar',
+    MB_ICONQUESTION + MB_YESNO + MB_DEFBUTTON2) = ID_YES then
+  begin
+    FConsultaDAO.Delete(
+      DtsConsulta.DataSet.FieldByName('ID').AsString
+    );
+  end;
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroAtualizarExecute(Sender: TObject);
