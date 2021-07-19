@@ -8,17 +8,22 @@ uses
   Vcl.StdCtrls, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids,
-  Vcl.DBGrids;
+  Vcl.DBGrids, System.Actions, Vcl.ActnList, Vcl.ToolWin, Vcl.ActnMan,
+  Vcl.ActnCtrls, Vcl.PlatformDefaultStyleActnCtrls, Vcl.Menus;
 
 type
   TFrmPrincipal = class(TForm)
+    ActionManager1: TActionManager;
+    ActAbastecimento: TAction;
+    ActTanque: TAction;
+    ActBomba: TAction;
     Button1: TButton;
-    DBGrid1: TDBGrid;
-    FDMemTable1: TFDMemTable;
-    DataSource1: TDataSource;
+    Button2: TButton;
+    Button3: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
+    procedure ActAbastecimentoExecute(Sender: TObject);
+    procedure ActTanqueExecute(Sender: TObject);
+    procedure ActBombaExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -30,37 +35,56 @@ var
 
 implementation
 
-{$R *.dfm}
-
 uses
+  datamodule.conexao,
+
+  bomba.consulta.view,
+  tanque.consulta.view,
+  abastecimento.consulta.view,
+
   abastecimento.DAO,
-  abastecimento.model, datamodule.conexao;
+  bomba.DAO,
+  tanque.DAO,
 
-procedure TFrmPrincipal.Button1Click(Sender: TObject);
-var
-  AbastecimentoDAO: TAbastecimentoDAO;
-begin
-  AbastecimentoDAO := TAbastecimentoDAO.Create(DtmConexao.FDConnection1);
-  try
-    if Assigned(DataSource1.DataSet) then
-      DataSource1.DataSet.Free;
+  abastecimento.model,
+  bomba.model,
+  tanque.model;
 
-    //DataSource1.DataSet := AbastecimentoDAO.GetById<TAbastecimento>('tests');
-    DataSource1.DataSet := AbastecimentoDAO.GetAll<TAbastecimento>;
-  finally
-    AbastecimentoDAO.free;
-  end;
-end;
+{$R *.dfm}
 
 procedure TFrmPrincipal.FormCreate(Sender: TObject);
 begin
   ReportMemoryLeaksOnShutdown := DebugHook <> 0;
 end;
 
-procedure TFrmPrincipal.FormDestroy(Sender: TObject);
+procedure TFrmPrincipal.ActAbastecimentoExecute(Sender: TObject);
 begin
-  if Assigned(DataSource1.DataSet) then
-    DataSource1.DataSet.Free;
+  TFrmAbastecimentoConsultaView.ShowConsulta(
+    Self,
+    DtmConexao.FDConnection1,
+    TAbastecimentoDAO,
+    TAbastecimentoModel
+  );
+end;
+
+procedure TFrmPrincipal.ActBombaExecute(Sender: TObject);
+begin
+  TFrmBombaConsultaView.ShowConsulta(
+    Self,
+    DtmConexao.FDConnection1,
+    TBombaDAO,
+    TBombaModel
+  );
+end;
+
+procedure TFrmPrincipal.ActTanqueExecute(Sender: TObject);
+begin
+  TFrmTanqueConsultaView.ShowConsulta(
+    Self,
+    DtmConexao.FDConnection1,
+    TTanqueDAO,
+    TTanqueModel
+  );
 end;
 
 end.

@@ -8,7 +8,7 @@ uses
 
 type
   [TTabela('BOMBA')]
-  TBomba = class(TBaseModel)
+  TBombaModel = class(TBaseModel)
   private
     FID: string;
     FIdTanque: string;

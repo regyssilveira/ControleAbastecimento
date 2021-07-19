@@ -38,7 +38,7 @@ implementation
 
 uses
   System.IOUtils,
-  bomba.DAO, tanque.DAO, abastecimento.DAO,
+  base.DAO, bomba.DAO, tanque.DAO, abastecimento.DAO,
   abastecimento.model, bomba.model, tanque.model;
 
 // metodo para verficar e criar as tabelas se não existirem no banco
@@ -47,19 +47,23 @@ uses
 procedure TDtmConexao.VerificarEConstruirBanco;
 var
   Tabelas: TStringList;
+  BombaDAO, TanqueDAO, AbastecimentoDAO: IDAO;
 begin
   Tabelas := TStringList.Create;
   try
     FDConnection1.GetTableNames('', '', '', Tabelas);
 
-    if Tabelas.IndexOf(TTanqueDAO.GetTableName<TTanque>) < 0 then
-      FDConnection1.ExecSQL(TTanqueDAO.GetSQLCreateTable<TTanque>);
+    TanqueDAO := TTanqueDAO.Create(FDConnection1, TTanqueModel);
+    if Tabelas.IndexOf(TanqueDAO.GetTableName) < 0 then
+      FDConnection1.ExecSQL(TanqueDAO.GetSQLCreateTable);
 
-    if Tabelas.IndexOf(TBombaDAO.GetTableName<TBomba>) < 0 then
-      FDConnection1.ExecSQL(TBombaDAO.GetSQLCreateTable<TBomba>);
+    BombaDAO := TBombaDAO.Create(FDConnection1, TBombaModel);
+    if Tabelas.IndexOf(BombaDAO.GetTableName) < 0 then
+      FDConnection1.ExecSQL(BombaDAO.GetSQLCreateTable);
 
-    if Tabelas.IndexOf(TAbastecimentoDAO.GetTableName<TAbastecimento>) < 0 then
-      FDConnection1.ExecSQL(TAbastecimentoDAO.GetSQLCreateTable<TAbastecimento>);
+    AbastecimentoDAO := TAbastecimentoDAO.Create(FDConnection1, TAbastecimentoModel);
+    if Tabelas.IndexOf(AbastecimentoDAO.GetTableName) < 0 then
+      FDConnection1.ExecSQL(AbastecimentoDAO.GetSQLCreateTable);
 
     FDConnection1.Close;
   finally

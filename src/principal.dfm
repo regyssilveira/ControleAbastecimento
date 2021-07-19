@@ -1,8 +1,8 @@
 object FrmPrincipal: TFrmPrincipal
   Left = 0
   Top = 0
-  Caption = 'Controle de Abastecimento'
-  ClientHeight = 482
+  Caption = 'Controle de Abastecimentos'
+  ClientHeight = 502
   ClientWidth = 871
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,46 +11,66 @@ object FrmPrincipal: TFrmPrincipal
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Visible = True
+  OnClick = ActTanqueExecute
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object Button1: TButton
-    Left = 30
-    Top = 15
-    Width = 245
-    Height = 35
-    Caption = 'Button1'
+    Left = 25
+    Top = 35
+    Width = 180
+    Height = 55
+    Action = ActAbastecimento
     TabOrder = 0
-    OnClick = Button1Click
   end
-  object DBGrid1: TDBGrid
-    Left = 30
-    Top = 115
-    Width = 791
-    Height = 321
-    DataSource = DataSource1
+  object Button2: TButton
+    Left = 25
+    Top = 96
+    Width = 180
+    Height = 55
+    Action = ActBomba
     TabOrder = 1
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'Tahoma'
-    TitleFont.Style = []
   end
-  object FDMemTable1: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
-    UpdateOptions.CheckRequired = False
-    UpdateOptions.AutoCommitUpdates = True
-    Left = 425
-    Top = 260
+  object Button3: TButton
+    Left = 25
+    Top = 157
+    Width = 180
+    Height = 55
+    Action = ActTanque
+    TabOrder = 2
   end
-  object DataSource1: TDataSource
-    DataSet = FDMemTable1
+  object ActionManager1: TActionManager
+    ActionBars = <
+      item
+        Items = <
+          item
+            Action = ActAbastecimento
+            Caption = '&Abastecimento'
+          end
+          item
+            Action = ActTanque
+            Caption = '&Tanque'
+          end
+          item
+            Action = ActBomba
+            Caption = '&Bomba'
+          end>
+      end>
     Left = 430
-    Top = 245
+    Top = 300
+    StyleName = 'Platform Default'
+    object ActAbastecimento: TAction
+      Caption = 'Abastecimento'
+      OnExecute = ActAbastecimentoExecute
+    end
+    object ActTanque: TAction
+      Caption = 'Tanque'
+      OnExecute = ActTanqueExecute
+    end
+    object ActBomba: TAction
+      Caption = 'Bomba'
+      OnExecute = ActBombaExecute
+    end
   end
 end

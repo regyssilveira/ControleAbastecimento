@@ -10,6 +10,8 @@ type
 
   end;
 
+  TBaseModelClass = class of TBaseModel;
+
 implementation
 
 end.

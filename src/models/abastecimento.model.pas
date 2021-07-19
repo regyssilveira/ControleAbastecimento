@@ -8,7 +8,7 @@ uses
 
 type
   [TTabela('ABASTECIMENTO')]
-  TAbastecimento = class(TBaseModel)
+  TAbastecimentoModel = class(TBaseModel)
   private
     FValorImposto: Double;
     FValorUnitario: Double;

@@ -8,33 +8,54 @@ uses
   System.Classes,
   System.SysUtils,
   System.Types,
-  System.Generics.Defaults,
-  System.Generics.Collections,
 
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error,
   FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Phys,
   FireDAC.Comp.Client, FireDAC.Stan.ExprFuncs;
 
 type
-  TBaseDAO = class
-  private
-    FConnection: TFDConnection;
+  IDAO  = interface
+    ['{5D74BB3C-7651-4C4E-AA8D-4BE82E90BC02}']
+    function GetFieldList: string;
+    function GetPkField: string;
+    function GetConnection: TFDConnection;
+    function GetModelo: TBaseModelClass;
+    function GetSQLCreateTable: string;
+    function GetTableName: string;
+    function GetSelect: string;
 
-    class function GetFieldList<T: class>: string;
-    class function GetPkField<T: class>: string;
-  public
-    constructor Create(const AFDConnection: TFDConnection);
-
-    class function GetSQLCreateTable<T: class>: string;
-    class function GetTableName<T: class>: string;
-    class function GetSelect<T: class>: string;
-
-    function GetAll<T: class>(const AWhere: string = ''): TDataSet;
+    function GetAll(const AWhere: string = ''): TDataSet;
 
     procedure Salvar(AObjeto: TObject);
+    procedure Delete(const AID: string);
 
-    property Connection: TFDConnection read FConnection;
+    property Connection: TFDConnection read GetConnection;
+    property Modelo: TBaseModelClass read GetModelo;
   end;
+
+  TBaseDAO = class(TInterfacedObject, IDAO)
+  private
+    FConnection: TFDConnection;
+    FModeloClass: TBaseModelClass;
+
+    function GetFieldList: string;
+    function GetPkField: string;
+    function GetConnection: TFDConnection;
+    function GetModelo: TBaseModelClass;
+  public
+    constructor Create(AFDConnection: TFDConnection; AModelo: TBaseModelClass);
+
+    function GetSQLCreateTable: string;
+    function GetTableName: string;
+    function GetSelect: string;
+
+    function GetAll(const AWhere: string = ''): TDataSet;
+
+    procedure Salvar(AObjeto: TObject);
+    procedure Delete(const AID: string);
+  end;
+
+  TBaseDAOClass = class of TBaseDAO;
 
 implementation
 
@@ -44,18 +65,23 @@ uses
 
 { TBaseDAO }
 
-constructor TBaseDAO.Create(const AFDConnection: TFDConnection);
+constructor TBaseDAO.Create(AFDConnection: TFDConnection; AModelo: TBaseModelClass);
 begin
-  FConnection := AFDConnection;
+  FConnection  := AFDConnection;
+  FModeloClass := AModelo;
 end;
 
-class function TBaseDAO.GetSQLCreateTable<T>: string;
+function TBaseDAO.GetConnection: TFDConnection;
+begin
+  Result := FConnection;
+end;
+
+function TBaseDAO.GetSQLCreateTable: string;
 var
   OContexto: TRttiContext;
   OTipo: TRttiType;
   OAtributo: TCustomAttribute;
   OPropriedade: TRttiProperty;
-  ValorProp: TValue;
 
   ICount: Integer;
   TableName: string;
@@ -69,7 +95,7 @@ var
 begin
   TableFields := EmptyStr;
 
-  OTipo := OContexto.GetType(T);
+  OTipo := OContexto.GetType(FModeloClass);
   try
     // nome da tabela
     for OAtributo in OTipo.GetAttributes do
@@ -135,7 +161,7 @@ begin
     ');';
 end;
 
-class function TBaseDAO.GetTableName<T>: string;
+function TBaseDAO.GetTableName: string;
 var
   OContexto: TRttiContext;
   OTipo: TRttiType;
@@ -143,7 +169,7 @@ var
 begin
   Result := EmptyStr;
 
-  OTipo := OContexto.GetType(T);
+  OTipo := OContexto.GetType(FModeloClass);
   try
     // nome da tabela
     for OAtributo in OTipo.GetAttributes do
@@ -156,20 +182,17 @@ begin
   end;
 end;
 
-class function TBaseDAO.GetPkField<T>: string;
+function TBaseDAO.GetPkField: string;
 var
   OContexto: TRttiContext;
   OTipo: TRttiType;
   OAtributo: TCustomAttribute;
   OPropriedade: TRttiProperty;
-
-  ICOunt: Integer;
 begin
   Result := EmptyStr;
 
-  OTipo := OContexto.GetType(T);
+  OTipo := OContexto.GetType(FModeloClass);
   try
-    ICount := 0;
     for OPropriedade in OTipo.GetProperties do
     begin
       for OAtributo in OPropriedade.GetAttributes do
@@ -186,7 +209,7 @@ begin
   end;
 end;
 
-class function TBaseDAO.GetFieldList<T>: string;
+function TBaseDAO.GetFieldList: string;
 var
   OContexto: TRttiContext;
   OTipo: TRttiType;
@@ -197,7 +220,7 @@ var
 begin
   Result := EmptyStr;
 
-  OTipo := OContexto.GetType(T);
+  OTipo := OContexto.GetType(FModeloClass);
   try
     ICount := 0;
     for OPropriedade in OTipo.GetProperties do
@@ -218,29 +241,38 @@ begin
   end;
 end;
 
-class function TBaseDAO.GetSelect<T>: string;
+function TBaseDAO.GetModelo: TBaseModelClass;
+begin
+  Result := FModeloClass;
+end;
+
+function TBaseDAO.GetSelect: string;
 begin
   Result := Format('select %s from %s', [
-    Self.GetFieldList<T>, Self.GetTableName<T>
+    Self.GetFieldList, Self.GetTableName
   ]);
 end;
 
-
-function TBaseDAO.GetAll<T>(const AWhere: string): TDataSet;
+function TBaseDAO.GetAll(const AWhere: string): TDataSet;
 var
   SSQL: string;
 begin
-  if not Assigned(Self.Connection) then
+  if not Assigned(FConnection) then
     raise EDatabaseError.Create('Propriedade connection não foi informada.');
 
-  SSQL := self.GetSelect<T>;
+  SSQL := self.GetSelect;
   if not AWhere.Trim.IsEmpty then
     SSQL := SSQL + ' where ' + AWhere;
 
-  Self.Connection.ExecSQL(SSQL, Result);
+  FConnection.ExecSQL(SSQL, Result);
 end;
 
 procedure TBaseDAO.Salvar(AObjeto: TObject);
+begin
+
+end;
+
+procedure TBaseDAO.Delete(const AID: string);
 begin
 
 end;

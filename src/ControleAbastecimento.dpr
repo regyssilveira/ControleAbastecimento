@@ -16,14 +16,18 @@ uses
   abastecimento.controller in 'controllers\abastecimento.controller.pas',
   tanque.controller in 'controllers\tanque.controller.pas',
   bomba.controller in 'controllers\bomba.controller.pas',
-  base.model in 'models\base.model.pas';
+  base.model in 'models\base.model.pas',
+  base.consulta.view in 'views\base.consulta.view.pas' {FrmBaseConsultaView},
+  bomba.consulta.view in 'views\bomba.consulta.view.pas' {FrmBombaConsultaView},
+  tanque.consulta.view in 'views\tanque.consulta.view.pas' {FrmTanqueConsultaView},
+  abastecimento.consulta.view in 'views\abastecimento.consulta.view.pas' {FrmAbastecimentoConsultaView};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.CreateForm(TDtmConexao, DtmConexao);
+  Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.Run;
 end.
