@@ -159,6 +159,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="classes\orm.utils.pas"/>
+        <DCCReference Include="classes\dbgrid.helper.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

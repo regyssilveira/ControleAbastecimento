@@ -13,7 +13,9 @@ uses
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids,
-  Vcl.Menus, Vcl.StdActns, Vcl.ExtCtrls, Vcl.ComCtrls;
+  Vcl.Menus, Vcl.StdActns, Vcl.ExtCtrls, Vcl.ComCtrls,
+
+  dbgrid.helper;
 
 type
   TFrmBaseConsultaView = class(TForm)
@@ -111,6 +113,8 @@ begin
 
   FConsultaDAO := FConsultaDAOClass.Create(FConnection, FConsultaModelClass);
   DtsConsulta.DataSet := FConsultaDAO.GetDataset;
+
+  DBGridConsulta.AutoAjustarLarguraColunas;
 end;
 
 procedure TFrmBaseConsultaView.FormCreate(Sender: TObject);
@@ -126,7 +130,7 @@ end;
 
 procedure TFrmBaseConsultaView.FormShow(Sender: TObject);
 begin
-  AbrirTAbela;
+  AbrirTabela;
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroNovoExecute(Sender: TObject);

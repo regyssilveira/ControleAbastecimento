@@ -25,7 +25,8 @@ uses
   bomba.consulta.view in 'views\bomba.consulta.view.pas' {FrmBombaConsultaView},
   tanque.cadastro.view in 'views\tanque.cadastro.view.pas' {FrmTanqueCadastroView},
   tanque.consulta.view in 'views\tanque.consulta.view.pas' {FrmTanqueConsultaView},
-  orm.utils in 'classes\orm.utils.pas';
+  orm.utils in 'classes\orm.utils.pas',
+  dbgrid.helper in 'classes\dbgrid.helper.pas';
 
 {$R *.res}
 
