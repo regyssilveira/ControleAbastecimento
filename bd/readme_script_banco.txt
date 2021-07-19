@@ -1,0 +1,1 @@
+não foi criado script pois o proprio aplicativo com base nas classes definidas já cria o banco SQLite corretamente, então basta executar o aplicativo para ter o banco criado.
