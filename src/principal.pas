@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids,
   Vcl.DBGrids, System.Actions, Vcl.ActnList, Vcl.ToolWin, Vcl.ActnMan,
-  Vcl.ActnCtrls, Vcl.PlatformDefaultStyleActnCtrls, Vcl.Menus;
+  Vcl.ActnCtrls, Vcl.PlatformDefaultStyleActnCtrls, Vcl.Menus, Vcl.ExtCtrls;
 
 type
   TFrmPrincipal = class(TForm)
@@ -17,6 +17,8 @@ type
     ActAbastecimento: TAction;
     ActTanque: TAction;
     ActBomba: TAction;
+    PnlMenu: TPanel;
+    PnlClient: TPanel;
     Button1: TButton;
     Button2: TButton;
     Button3: TButton;
@@ -60,7 +62,7 @@ end;
 procedure TFrmPrincipal.ActAbastecimentoExecute(Sender: TObject);
 begin
   TFrmAbastecimentoConsultaView.ShowConsulta(
-    Self,
+    PnlClient,
     DtmConexao.FDConnection1,
     TAbastecimentoDAO,
     TAbastecimentoModel

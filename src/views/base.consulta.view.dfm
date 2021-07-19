@@ -12,6 +12,7 @@ object FrmBaseConsultaView: TFrmBaseConsultaView
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  Position = poOwnerFormCenter
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
@@ -21,7 +22,7 @@ object FrmBaseConsultaView: TFrmBaseConsultaView
     Left = 0
     Top = 0
     Width = 864
-    Height = 473
+    Height = 454
     Align = alClient
     DataSource = DtsConsulta
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -33,6 +34,13 @@ object FrmBaseConsultaView: TFrmBaseConsultaView
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
     OnDblClick = DBGridConsultaDblClick
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 454
+    Width = 864
+    Height = 19
+    Panels = <>
   end
   object DtsConsulta: TDataSource
     OnStateChange = DtsConsultaStateChange

@@ -5,6 +5,7 @@ interface
 uses
   base.DAO,
   base.model,
+  base.cadastro.view,
 
   FireDAC.Comp.Client,
 
@@ -12,7 +13,7 @@ uses
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls,
   Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids,
-  Vcl.Menus, Vcl.StdActns;
+  Vcl.Menus, Vcl.StdActns, Vcl.ExtCtrls, Vcl.ComCtrls;
 
 type
   TFrmBaseConsultaView = class(TForm)
@@ -30,6 +31,7 @@ type
     ActRegistroAtualizar: TAction;
     Atualizar1: TMenuItem;
     N1: TMenuItem;
+    StatusBar1: TStatusBar;
     procedure ActRegistroNovoExecute(Sender: TObject);
     procedure ActRegistroAlterarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -45,11 +47,14 @@ type
     FConsultaDAO: IDAO;
     FConsultaDAOClass: TBaseDAOClass;
     FConsultaModelClass: TBaseModelClass;
+    FCadastroView: ICadastroView;
     procedure AbrirTabela;
   public
     class procedure ShowConsulta(const AOwner: TComponent;
       const AConnection: TFDConnection; const ADAO: TBaseDAOClass;
       const AModelo: TBaseModelClass);
+
+    property CadastroView: ICadastroView read FCadastroView write FCadastroView;
   end;
 
 implementation
@@ -62,12 +67,15 @@ class procedure TFrmBaseConsultaView.ShowConsulta(const AOwner: TComponent;
 var
   FrmConsulta: TFrmBaseConsultaView;
 begin
+  Assert(AConnection <> nil, 'Conexão ao banco de dados não foi informada.');
+  Assert(ADAO <> nil, 'Classe ADO não foi informada.');
+  Assert(AModelo <> nil, 'Classe do Modelo não foi informada.');
+
   FrmConsulta := TFrmBaseConsultaView.Create(AOwner);
   try
     FrmConsulta.FConnection         := AConnection;
     FrmConsulta.FConsultaDAOClass   := ADAO;
     FrmConsulta.FConsultaModelClass := AModelo;
-
     FrmConsulta.ShowModal;
   finally
     FreeAndNil(FrmConsulta);
@@ -102,7 +110,7 @@ begin
     FreeAndNil(DtsConsulta.DataSet);
 
   FConsultaDAO := FConsultaDAOClass.Create(FConnection, FConsultaModelClass);
-  DtsConsulta.DataSet := FConsultaDAO.GetAll;
+  DtsConsulta.DataSet := FConsultaDAO.GetDataset;
 end;
 
 procedure TFrmBaseConsultaView.FormCreate(Sender: TObject);
@@ -121,19 +129,19 @@ begin
   AbrirTAbela;
 end;
 
+procedure TFrmBaseConsultaView.ActRegistroNovoExecute(Sender: TObject);
+begin
+  //
+end;
+
 procedure TFrmBaseConsultaView.ActRegistroAlterarExecute(Sender: TObject);
 begin
-  FConsultaDAO.Salvar(nil);
+  //
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroApagarExecute(Sender: TObject);
 begin
-  FConsultaDAO.Delete('');
-end;
-
-procedure TFrmBaseConsultaView.ActRegistroNovoExecute(Sender: TObject);
-begin
-  FConsultaDAO.Salvar(nil);
+  //
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroAtualizarExecute(Sender: TObject);

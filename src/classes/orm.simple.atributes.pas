@@ -16,34 +16,31 @@ type
 
   TCampo = class(TCustomAttribute)
   private
+    FVisivel: Boolean;
     FFieldName: string;
-  public
-    constructor Create(const ANome: string);
-    property FieldName: string read FFieldName write FFieldName;
-  end;
-
-  TDisplay = class(TCustomAttribute)
-  private
-    FNome: string;
-  public
-    constructor Create(const ANome: string);
-    property Nome: string read FNome write FNome;
-  end;
-
-  TMascara = class(TCustomAttribute)
-  private
-    FNome: string;
-  public
-    constructor Create(const ANome: string);
-    property Nome: string read FNome write FNome;
-  end;
-
-  TTamanho = class(TCustomAttribute)
-  private
+    FEditavel: Boolean;
+    FDisplayText: string;
+    FMascara: string;
     FTamanho: Integer;
   public
-    constructor Create(const ATamanho: Integer);
+    constructor Create(const AFieldName: string; const ADisplayText: string = '';
+      const AVisivel: Boolean = True; const AEditavel: Boolean = True;
+      const AMascara: string = ''; const ATamanho: Integer = 0);
+
+    property FieldName: string read FFieldName write FFieldName;
+    property DisplayText: string read FDisplayText write FDisplayText;
+    property Mascara: string read FMascara write FMascara;
     property Tamanho: Integer read FTamanho write FTamanho;
+    property Visivel: Boolean read FVisivel write FVisivel;
+    property Editavel: Boolean read FEditavel write FEditavel;
+  end;
+
+  TLista = class(TCustomAttribute)
+  private
+    FLista: string;
+  public
+    constructor Create(const Alista: string);
+    property Lista: string read FLista write FLista;
   end;
 
   TPk = class(TCustomAttribute)
@@ -52,13 +49,14 @@ type
   TNotNull = class(TCustomAttribute)
   end;
 
-  TVisivel = class(TCustomAttribute)
-  end;
-
-  TEditavel = class(TCustomAttribute)
-  end;
-
 implementation
+
+{ TLista }
+
+constructor TLista.Create(const Alista: string);
+begin
+  FLista := Alista;
+end;
 
 { Tabela }
 
@@ -67,32 +65,18 @@ begin
   FTableName := ANome;
 end;
 
-{ Campo }
+{ TCampo }
 
-constructor TCampo.Create(const ANome: string);
+constructor TCampo.Create(const AFieldName, ADisplayText: string;
+  const AVisivel, AEditavel: Boolean; const AMascara: string;
+  const ATamanho: Integer);
 begin
-  FFieldName  := ANome;
-end;
-
-{ Display }
-
-constructor TDisplay.Create(const ANome: string);
-begin
-  FNome := ANome;
-end;
-
-{ Mascara }
-
-constructor TMascara.Create(const ANome: string);
-begin
-  FNome := ANome;
-end;
-
-{ Tamanho }
-
-constructor TTamanho.Create(const ATamanho: Integer);
-begin
-  FTamanho := ATamanho;
+  FFieldName   := AFieldName;
+  FDisplayText := ADisplayText;
+  FMascara     := AMascara;
+  FTamanho     := ATamanho;
+  FVisivel     := AVisivel;
+  FEDitavel    := AEditavel;
 end;
 
 end.

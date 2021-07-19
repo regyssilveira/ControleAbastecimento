@@ -14,21 +14,14 @@ type
     FCombustivel: string;
     FValorLitro: Double;
   public
-    [TCampo('id'), TPk, TNotNull]
+    [TCampo('id', 'Id', True), TPk, TNotNull]
     property ID: string read FID write FID;
 
-    [TCampo('nome_combustivel'), TNotNull]
-    [TDisplay('Nome do Combustível')]
-    [TTamanho(20)]
-    [TVisivel]
-    [TEditavel]
+    [TCampo('nome_combustivel', 'Combustível', True, True, '', 20), TNotNull]
+    [TLista('Gasolina, Óleo Diesel')]
     property Combustivel: string read FCombustivel write FCombustivel;
 
-    [TCampo('vl_litro'), TNotNull]
-    [TDisplay('Valor Litro')]
-    [TMascara(',#0.000')]
-    [TVisivel]
-    [TEditavel]
+    [TCampo('vl_litro', 'Valor Litro', True, True, ',#.000'), TNotNull]
     property ValorLitro: Double read FValorLitro write FValorLitro;
   end;
 

@@ -126,20 +126,36 @@
         <DCCReference Include="controllers\tanque.controller.pas"/>
         <DCCReference Include="controllers\bomba.controller.pas"/>
         <DCCReference Include="models\base.model.pas"/>
+        <DCCReference Include="views\abastecimento.cadastro.view.pas">
+            <Form>FrmAbastecimentoCadastroView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="views\abastecimento.consulta.view.pas">
+            <Form>FrmAbastecimentoConsultaView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="views\base.cadastro.view.pas">
+            <Form>FrmBaseCadastroView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <DCCReference Include="views\base.consulta.view.pas">
             <Form>FrmBaseConsultaView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="views\bomba.cadastro.view.pas">
+            <Form>FrmBombaCadastroView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="views\bomba.consulta.view.pas">
             <Form>FrmBombaConsultaView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="views\tanque.consulta.view.pas">
-            <Form>FrmTanqueConsultaView</Form>
+        <DCCReference Include="views\tanque.cadastro.view.pas">
+            <Form>FrmTanqueCadastroView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="views\abastecimento.consulta.view.pas">
-            <Form>FrmAbastecimentoConsultaView</Form>
+        <DCCReference Include="views\tanque.consulta.view.pas">
+            <Form>FrmTanqueConsultaView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

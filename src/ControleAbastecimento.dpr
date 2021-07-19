@@ -17,17 +17,21 @@ uses
   tanque.controller in 'controllers\tanque.controller.pas',
   bomba.controller in 'controllers\bomba.controller.pas',
   base.model in 'models\base.model.pas',
+  abastecimento.cadastro.view in 'views\abastecimento.cadastro.view.pas' {FrmAbastecimentoCadastroView},
+  abastecimento.consulta.view in 'views\abastecimento.consulta.view.pas' {FrmAbastecimentoConsultaView},
+  base.cadastro.view in 'views\base.cadastro.view.pas' {FrmBaseCadastroView},
   base.consulta.view in 'views\base.consulta.view.pas' {FrmBaseConsultaView},
+  bomba.cadastro.view in 'views\bomba.cadastro.view.pas' {FrmBombaCadastroView},
   bomba.consulta.view in 'views\bomba.consulta.view.pas' {FrmBombaConsultaView},
-  tanque.consulta.view in 'views\tanque.consulta.view.pas' {FrmTanqueConsultaView},
-  abastecimento.consulta.view in 'views\abastecimento.consulta.view.pas' {FrmAbastecimentoConsultaView};
+  tanque.cadastro.view in 'views\tanque.cadastro.view.pas' {FrmTanqueCadastroView},
+  tanque.consulta.view in 'views\tanque.consulta.view.pas' {FrmTanqueConsultaView};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TDtmConexao, DtmConexao);
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
+  Application.CreateForm(TDtmConexao, DtmConexao);
   Application.Run;
 end.

@@ -14,20 +14,13 @@ type
     FIdTanque: string;
     FDescricao: string;
   public
-    [TCampo('id'), TPk, TNotNull]
-    [TDisplay('Id da Bomba')]
+    [TCampo('id', 'Id da Bomba', True, False), TPk, TNotNull]
     property Id: string read FID write FID;
 
-    [TCampo('id_tanque'), TNotNull]
-    [TDisplay('Id do Tanque')]
-    [TVisivel]
-    [TEditavel]
+    [TCampo('id_tanque', 'Id do Tanque', True, True), TNotNull]
     property IdTanque: string read FIdTanque write FIdTanque;
 
-    [TCampo('descricao'), TNotNull]
-    [TDisplay('Descrição da Bomba')]
-    [TVisivel]
-    [TEditavel]
+    [TCampo('descricao', 'Descrição da Bomba', True, True), TNotNull]
     property Descricao: string read FDescricao write FDescricao;
   end;
 
