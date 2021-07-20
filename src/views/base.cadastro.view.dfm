@@ -12,6 +12,9 @@ object FrmBaseCadastroView: TFrmBaseCadastroView
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -24,8 +27,6 @@ object FrmBaseCadastroView: TFrmBaseCadastroView
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 1
-    ExplicitTop = 432
-    ExplicitWidth = 805
     object BtnGravar: TButton
       AlignWithMargins = True
       Left = 453
@@ -35,7 +36,6 @@ object FrmBaseCadastroView: TFrmBaseCadastroView
       Align = alRight
       Caption = 'Gravar'
       TabOrder = 0
-      ExplicitLeft = 652
     end
   end
   object PgcCadastro: TPageControl
@@ -49,8 +49,6 @@ object FrmBaseCadastroView: TFrmBaseCadastroView
     TabOrder = 0
     TabStop = False
     TabWidth = 100
-    ExplicitWidth = 799
-    ExplicitHeight = 426
     object TbsDadosCadastrais: TTabSheet
       Caption = 'Dados Cadastrais'
     end

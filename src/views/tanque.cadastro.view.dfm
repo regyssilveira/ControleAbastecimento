@@ -34,16 +34,16 @@ inherited FrmTanqueCadastroView: TFrmTanqueCadastroView
       object Label2: TLabel
         Left = 35
         Top = 76
-        Width = 31
+        Width = 58
         Height = 13
-        Caption = 'Label1'
+        Caption = 'Combust'#237'vel'
       end
       object Label3: TLabel
         Left = 35
         Top = 122
-        Width = 31
+        Width = 48
         Height = 13
-        Caption = 'Label1'
+        Caption = 'Valor Litro'
       end
       object EdtID: TEdit
         Left = 35

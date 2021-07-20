@@ -26,7 +26,7 @@ type
 
     function GetDataset(const AWhere: string = ''): TDataSet;
 
-    procedure Salvar(AObjeto: TObject);
+    procedure Salvar(AObjeto: TBaseModel);
     procedure Delete(const AID: string);
 
     property Connection: TFDConnection read GetConnection;
@@ -43,6 +43,7 @@ type
     function GetConnection: TFDConnection;
     function GetModelo: TBaseModelClass;
     procedure ConfigurarFieldsDataset(ADataset: TDataSet);
+    function RemoveVirgulaFinal(const AString: string): string;
   public
     constructor Create(AFDConnection: TFDConnection; AModelo: TBaseModelClass);
 
@@ -52,7 +53,7 @@ type
 
     function GetDataset(const AWhere: string = ''): TDataSet;
 
-    procedure Salvar(AObjeto: TObject);
+    procedure Salvar(AObjeto: TBaseModel);
     procedure Delete(const AID: string);
   end;
 
@@ -77,6 +78,17 @@ begin
   Result := FConnection;
 end;
 
+function TBaseDAO.RemoveVirgulaFinal(const AString: string): string;
+begin
+  Result := AString.Trim;
+  if not Result.IsEmpty then
+  begin
+    if Result[Result.Length] = ',' then
+      Result[Result.Length] := ' ';
+    Result := Result.Trim;
+  end;
+end;
+
 function TBaseDAO.GetSQLCreateTable: string;
 var
   OContexto: TRttiContext;
@@ -84,7 +96,6 @@ var
   OAtributo: TCustomAttribute;
   OPropriedade: TRttiProperty;
 
-  ICount: Integer;
   TableName: string;
   TableFields: string;
   sPropType: string;
@@ -107,11 +118,8 @@ begin
     end;
 
     // nomes dos campos e tipos conforme tipo da propriedade
-    ICount := 0;
     for OPropriedade in OTipo.GetProperties do
     begin
-      Inc(ICount);
-
       // tipo do campo
       sPropType := OPropriedade.PropertyType.Name.ToUpper;
       if sPropType.Equals('INTEGER') then
@@ -152,11 +160,11 @@ begin
       if FieldPk <> '' then
         FieldString := FieldString + ' ' + FieldPk;
 
-      if ICount < Length(OTipo.GetProperties) then
-        FieldString := FieldString + ',';
-
+      FieldString := FieldString + ',';
       TableFields := TableFields + sLineBreak + FieldString;
     end;
+
+    TableFields := RemoveVirgulaFinal(TableFields);
   finally
     OContexto.Free;
   end;
@@ -194,6 +202,7 @@ var
   OTipo: TRttiType;
   OAtributo: TCustomAttribute;
   OPropriedade: TRttiProperty;
+  SFieldName: string;
 begin
   Result := EmptyStr;
 
@@ -203,9 +212,12 @@ begin
     begin
       for OAtributo in OPropriedade.GetAttributes do
       begin
-        if (OAtributo is TCampo) and (OAtributo is TPk) then
+        if OAtributo is TCampo then
+          SFieldName := TCampo(OAtributo).FieldName;
+
+        if (OAtributo is TPk) then
         begin
-          Result := TCampo(OAtributo).FieldName;
+          Result := SFieldName;
           Break;
         end;
       end;
@@ -221,27 +233,24 @@ var
   OTipo: TRttiType;
   OAtributo: TCustomAttribute;
   OPropriedade: TRttiProperty;
-
-  ICOunt: Integer;
 begin
   Result := EmptyStr;
 
   OTipo := OContexto.GetType(FModeloClass);
   try
-    ICount := 0;
     for OPropriedade in OTipo.GetProperties do
     begin
-      Inc(ICOunt);
-
       for OAtributo in OPropriedade.GetAttributes do
       begin
         if OAtributo is TCampo then
+        begin
           Result := Result + TCampo(OAtributo).FieldName;
+          Result := Result + ',';
+        end;
       end;
-
-      if ICount < Length(OTipo.GetProperties) then
-        Result := Result + ',';
     end;
+
+    Result := RemoveVirgulaFinal(Result);
   finally
     OContexto.Free;
   end;
@@ -287,7 +296,8 @@ begin
 
               ftDate, ftTime, ftDateTime, ftTimeStamp:
                 begin
-                  (FieldAtu as TDateTimeField).EditMask := CampoAtributo.Mascara;
+                  (FieldAtu as TDateTimeField).DisplayFormat := CampoAtributo.Mascara;
+                  (FieldAtu as TDateTimeField).EditMask      := CampoAtributo.Mascara;
                 end;
 
               ftMemo, ftWideMemo:
@@ -326,12 +336,32 @@ begin
   ConfigurarFieldsDataset(Result);
 end;
 
-procedure TBaseDAO.Salvar(AObjeto: TObject);
+procedure TBaseDAO.Delete(const AID: string);
+var
+  PkField: string;
+  TableName: string;
+  CountDelete: Integer;
 begin
+  if not Assigned(FConnection) then
+    raise EDatabaseError.Create('Propriedade connection não foi informada.');
 
+  PkField := GetPkField;
+  if PkField.trim.IsEmpty then
+    raise Exception.Create('Propriedade "TPK" não foi configurada corretamente no modelo de dados.');
+
+  TableName := GetTableName;
+  if TableName.trim.IsEmpty then
+    raise Exception.Create('Propriedade "TTableName" não foi configurada corretamente no modelo de dados.');
+
+  CountDelete := FConnection.ExecSQL(
+    'delete from ' + TableName + ' where ' + PkField + ' = ' + QuotedStr(AID)
+  );
+
+  if CountDelete <= 0 then
+    raise EDatabaseError.CreateFmt('Nenhum registro foi apagado para a o identificador "%s"', [AID]);
 end;
 
-procedure TBaseDAO.Delete(const AID: string);
+procedure TBaseDAO.Salvar(AObjeto: TBaseModel);
 begin
 
 end;

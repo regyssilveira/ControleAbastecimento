@@ -26,7 +26,8 @@ uses
   tanque.cadastro.view in 'views\tanque.cadastro.view.pas' {FrmTanqueCadastroView},
   tanque.consulta.view in 'views\tanque.consulta.view.pas' {FrmTanqueConsultaView},
   orm.utils in 'classes\orm.utils.pas',
-  dbgrid.helper in 'classes\dbgrid.helper.pas';
+  dbgrid.helper in 'classes\dbgrid.helper.pas',
+  base.controller in 'controllers\base.controller.pas';
 
 {$R *.res}
 

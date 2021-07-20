@@ -5,11 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Vcl.StdCtrls, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
-  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
-  FireDAC.DApt.Intf, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids,
-  Vcl.DBGrids, System.Actions, Vcl.ActnList, Vcl.ToolWin, Vcl.ActnMan,
-  Vcl.ActnCtrls, Vcl.PlatformDefaultStyleActnCtrls, Vcl.Menus, Vcl.ExtCtrls;
+  Vcl.StdCtrls, System.Actions, Vcl.ActnList, Vcl.PlatformDefaultStyleActnCtrls,
+  Vcl.ActnMan, Vcl.ExtCtrls;
 
 type
   TFrmPrincipal = class(TForm)
@@ -22,14 +19,18 @@ type
     Button1: TButton;
     Button2: TButton;
     Button3: TButton;
+    Button4: TButton;
+    ActRelatorio: TAction;
     procedure FormCreate(Sender: TObject);
     procedure ActAbastecimentoExecute(Sender: TObject);
     procedure ActTanqueExecute(Sender: TObject);
     procedure ActBombaExecute(Sender: TObject);
+    procedure ActRelatorioExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
-    { Private declarations }
+
   public
-    { Public declarations }
+
   end;
 
 var
@@ -40,9 +41,10 @@ implementation
 uses
   datamodule.conexao,
 
-  bomba.consulta.view,
-  tanque.consulta.view,
-  abastecimento.consulta.view,
+  base.controller,
+  abastecimento.controller,
+  bomba.controller,
+  tanque.controller,
 
   abastecimento.DAO,
   bomba.DAO,
@@ -50,7 +52,11 @@ uses
 
   abastecimento.model,
   bomba.model,
-  tanque.model;
+  tanque.model,
+
+  abastecimento.consulta.view,
+  bomba.consulta.view,
+  tanque.consulta.view;
 
 {$R *.dfm}
 
@@ -59,34 +65,40 @@ begin
   ReportMemoryLeaksOnShutdown := DebugHook <> 0;
 end;
 
-procedure TFrmPrincipal.ActAbastecimentoExecute(Sender: TObject);
+procedure TFrmPrincipal.FormShow(Sender: TObject);
 begin
-  TFrmAbastecimentoConsultaView.ShowConsulta(
-    PnlClient,
-    DtmConexao.FDConnection1,
-    TAbastecimentoDAO,
-    TAbastecimentoModel
-  );
+  Self.WindowState := TWindowState.wsMaximized;
+end;
+
+procedure TFrmPrincipal.ActAbastecimentoExecute(Sender: TObject);
+var
+  AbastecimentoController: IController;
+begin
+  AbastecimentoController := TAbastecimentoController.Create;
+  AbastecimentoController.ShowConsulta;
 end;
 
 procedure TFrmPrincipal.ActBombaExecute(Sender: TObject);
+var
+  BombaController: IController;
 begin
-  TFrmBombaConsultaView.ShowConsulta(
-    Self,
-    DtmConexao.FDConnection1,
-    TBombaDAO,
-    TBombaModel
-  );
+  BombaController := TBombaController.Create;
+  BombaController.ShowConsulta;
 end;
 
 procedure TFrmPrincipal.ActTanqueExecute(Sender: TObject);
+var
+  TanqueController: IController;
 begin
-  TFrmTanqueConsultaView.ShowConsulta(
-    Self,
-    DtmConexao.FDConnection1,
-    TTanqueDAO,
-    TTanqueModel
-  );
+  TanqueController := TTanqueController.Create;
+  TanqueController.ShowConsulta;
+end;
+
+procedure TFrmPrincipal.ActRelatorioExecute(Sender: TObject);
+begin
+
+//
 end;
 
 end.
+

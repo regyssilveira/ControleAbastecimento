@@ -18,9 +18,9 @@ type
     [TCampo('id')]
     EdtID: TEdit;
     [TCampo('nome_combustivel')]
-    EdtValorLitro: TMaskEdit;
-    [TCampo('vl_litro')]
     EdtCombustivel: TComboBox;
+    [TCampo('vl_litro')]
+    EdtValorLitro: TMaskEdit;
   private
 
   public

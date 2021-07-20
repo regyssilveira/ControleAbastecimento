@@ -160,6 +160,7 @@
         </DCCReference>
         <DCCReference Include="classes\orm.utils.pas"/>
         <DCCReference Include="classes\dbgrid.helper.pas"/>
+        <DCCReference Include="controllers\base.controller.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

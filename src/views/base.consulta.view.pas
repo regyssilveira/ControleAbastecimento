@@ -18,7 +18,12 @@ uses
   dbgrid.helper;
 
 type
-  TFrmBaseConsultaView = class(TForm)
+  IConsultaView = interface
+    ['{8E6DFC2A-E491-4840-8594-75D5EEF9B5CB}']
+    function ShowModal: Integer;
+  end;
+
+  TFrmBaseConsultaView = class(TForm, IConsultaView)
     DBGridConsulta: TDBGrid;
     DtsConsulta: TDataSource;
     ActionList1: TActionList;
@@ -47,41 +52,39 @@ type
   private
     FConnection: TFDConnection;
     FConsultaDAO: IDAO;
-    FConsultaDAOClass: TBaseDAOClass;
     FConsultaModelClass: TBaseModelClass;
     FCadastroView: ICadastroView;
+
     procedure AbrirTabela;
   public
-    class procedure ShowConsulta(const AOwner: TComponent;
-      const AConnection: TFDConnection; const ADAO: TBaseDAOClass;
-      const AModelo: TBaseModelClass);
+    constructor Create(const AOwner: TComponent;
+      const AConnection: TFDConnection; const ADAO: IDAO;
+      const AModelo: TBaseModelClass); overload;
 
     property CadastroView: ICadastroView read FCadastroView write FCadastroView;
   end;
+
+  TFrmBaseConsultaViewClass = class of TFrmBaseConsultaView;
 
 implementation
 
 {$R *.dfm}
 
-class procedure TFrmBaseConsultaView.ShowConsulta(const AOwner: TComponent;
-  const AConnection: TFDConnection; const ADAO: TBaseDAOClass;
+uses orm.utils;
+
+constructor TFrmBaseConsultaView.Create(const AOwner: TComponent;
+  const AConnection: TFDConnection; const ADAO: IDAO;
   const AModelo: TBaseModelClass);
-var
-  FrmConsulta: TFrmBaseConsultaView;
 begin
+  inherited Create(AOwner);
+
   Assert(AConnection <> nil, 'Conexão ao banco de dados não foi informada.');
   Assert(ADAO <> nil, 'Classe ADO não foi informada.');
   Assert(AModelo <> nil, 'Classe do Modelo não foi informada.');
 
-  FrmConsulta := TFrmBaseConsultaView.Create(AOwner);
-  try
-    FrmConsulta.FConnection         := AConnection;
-    FrmConsulta.FConsultaDAOClass   := ADAO;
-    FrmConsulta.FConsultaModelClass := AModelo;
-    FrmConsulta.ShowModal;
-  finally
-    FreeAndNil(FrmConsulta);
-  end;
+  FConnection         := AConnection;
+  FConsultaDAO        := ADAO;
+  FConsultaModelClass := AModelo;
 end;
 
 procedure TFrmBaseConsultaView.DBGridConsultaDblClick(Sender: TObject);
@@ -111,9 +114,7 @@ begin
   if Assigned(DtsConsulta.DataSet) then
     FreeAndNil(DtsConsulta.DataSet);
 
-  FConsultaDAO := FConsultaDAOClass.Create(FConnection, FConsultaModelClass);
   DtsConsulta.DataSet := FConsultaDAO.GetDataset;
-
   DBGridConsulta.AutoAjustarLarguraColunas;
 end;
 
@@ -139,8 +140,13 @@ begin
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroAlterarExecute(Sender: TObject);
+var
+  ObjSelectionado: IModel;
 begin
-  CadastroView.ShowAlteracao(Self, FConsultaDAO);
+  ObjSelectionado := FConsultaModelClass.Create;
+  ObjSelectionado.BindObjectFromFields(DtsConsulta.DataSet.Fields);
+
+  CadastroView.ShowAlteracao(Self, FConsultaDAO, ObjSelectionado);
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroApagarExecute(Sender: TObject);
@@ -151,8 +157,10 @@ begin
     MB_ICONQUESTION + MB_YESNO + MB_DEFBUTTON2) = ID_YES then
   begin
     FConsultaDAO.Delete(
-      DtsConsulta.DataSet.FieldByName('ID').AsString
+      DtsConsulta.DataSet.FieldByName(FConsultaDAO.GetPkField).AsString
     );
+
+    AbrirTabela;
   end;
 end;
 

@@ -14,6 +14,7 @@ object FrmPrincipal: TFrmPrincipal
   Visible = True
   OnClick = ActTanqueExecute
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object PnlMenu: TPanel
@@ -45,7 +46,6 @@ object FrmPrincipal: TFrmPrincipal
       Action = ActBomba
       Align = alTop
       TabOrder = 1
-      ExplicitTop = 39
     end
     object Button3: TButton
       AlignWithMargins = True
@@ -56,7 +56,16 @@ object FrmPrincipal: TFrmPrincipal
       Action = ActTanque
       Align = alTop
       TabOrder = 2
-      ExplicitTop = 75
+    end
+    object Button4: TButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 141
+      Width = 179
+      Height = 40
+      Action = ActRelatorio
+      Align = alTop
+      TabOrder = 3
     end
   end
   object PnlClient: TPanel
@@ -101,6 +110,10 @@ object FrmPrincipal: TFrmPrincipal
     object ActBomba: TAction
       Caption = 'Bomba'
       OnExecute = ActBombaExecute
+    end
+    object ActRelatorio: TAction
+      Caption = 'Relat'#243'rio'
+      OnExecute = ActRelatorioExecute
     end
   end
 end

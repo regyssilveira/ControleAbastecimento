@@ -8,7 +8,7 @@ uses
 
 type
   [TTabela('ABASTECIMENTO')]
-  TAbastecimentoModel = class(TBaseModel)
+  TAbastecimentoModel = class(TBaseModel, IModel)
   private
     FId: Integer;
     FIdBomba: Integer;
