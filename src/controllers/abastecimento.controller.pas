@@ -3,7 +3,9 @@ unit abastecimento.controller;
 interface
 
 uses
-  base.controller;
+  base.model.intf,
+  base.controller,
+  base.controller.intf;
 
 type
   TAbastecimentoController = class(TBaseController, IController)
@@ -11,7 +13,6 @@ type
 
   public
     constructor Create;
-    procedure ValidarDados(const Objeto: TObject); override;
   end;
 
 implementation
@@ -20,22 +21,15 @@ implementation
 
 uses
   datamodule.conexao,
-
   abastecimento.model,
-  abastecimento.DAO,
-  abastecimento.consulta.view;
+  abastecimento.DAO;
 
 constructor TAbastecimentoController.Create;
 begin
-  FConnection := DtmConexao.FDConnection1;
-  FModeloClass := TAbastecimentoModel;
-  FDAO := TAbastecimentoDAO.Create(FConnection, FModeloClass);
-  FConsultaView := TFrmAbastecimentoConsultaView;
-end;
-
-procedure TAbastecimentoController.ValidarDados(const Objeto: TObject);
-begin
-
+  FDAO := TAbastecimentoDAO.Create(
+    DtmConexao.FDConnection1,
+    TAbastecimentoModel
+  );
 end;
 
 end.

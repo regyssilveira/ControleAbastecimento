@@ -38,7 +38,7 @@ implementation
 
 uses
   System.IOUtils,
-  base.DAO, bomba.DAO, tanque.DAO, abastecimento.DAO,
+  base.DAO.intf, bomba.DAO, tanque.DAO, abastecimento.DAO,
   abastecimento.model, bomba.model, tanque.model;
 
 // metodo para verficar e criar as tabelas se não existirem no banco

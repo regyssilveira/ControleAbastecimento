@@ -4,6 +4,7 @@ interface
 
 uses
   base.model,
+  base.model.intf,
   orm.atributes;
 
 type
@@ -18,6 +19,8 @@ type
     FValorImposto: Double;
     FValorUnitario: Double;
   public
+    procedure ValidarDados; override;
+
     [TCampo('id', 'Id'), TPk, TNotNull]
     property Id: Integer read FId write FId;
 
@@ -41,6 +44,14 @@ type
   end;
 
 implementation
+
+{ TAbastecimentoModel }
+
+procedure TAbastecimentoModel.ValidarDados;
+begin
+  inherited;
+
+end;
 
 end.
 

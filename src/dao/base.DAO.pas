@@ -5,6 +5,9 @@ interface
 uses
   Data.DB,
   base.model,
+  base.model.intf,
+  base.DAO.intf,
+  auxiliares.classes,
   System.Classes,
   System.SysUtils,
   System.Types,
@@ -14,25 +17,6 @@ uses
   FireDAC.Comp.Client, FireDAC.Stan.ExprFuncs;
 
 type
-  IDAO  = interface
-    ['{5D74BB3C-7651-4C4E-AA8D-4BE82E90BC02}']
-    function GetFieldList: string;
-    function GetPkField: string;
-    function GetConnection: TFDConnection;
-    function GetModelo: TBaseModelClass;
-    function GetSQLCreateTable: string;
-    function GetTableName: string;
-    function GetSelect: string;
-
-    function GetDataset(const AWhere: string = ''): TDataSet;
-
-    procedure Salvar(AObjeto: TBaseModel);
-    procedure Delete(const AID: string);
-
-    property Connection: TFDConnection read GetConnection;
-    property Modelo: TBaseModelClass read GetModelo;
-  end;
-
   TBaseDAO = class(TInterfacedObject, IDAO)
   private
     FConnection: TFDConnection;
@@ -53,7 +37,7 @@ type
 
     function GetDataset(const AWhere: string = ''): TDataSet;
 
-    procedure Salvar(AObjeto: TBaseModel);
+    procedure Salvar(AObjeto: IModel);
     procedure Delete(const AID: string);
   end;
 
@@ -342,6 +326,9 @@ var
   TableName: string;
   CountDelete: Integer;
 begin
+  if AID.Trim.IsEmpty then
+    raise Exception.Create('ID do registro não foi informado, não é possível continuar.');
+
   if not Assigned(FConnection) then
     raise EDatabaseError.Create('Propriedade connection não foi informada.');
 
@@ -361,8 +348,12 @@ begin
     raise EDatabaseError.CreateFmt('Nenhum registro foi apagado para a o identificador "%s"', [AID]);
 end;
 
-procedure TBaseDAO.Salvar(AObjeto: TBaseModel);
+procedure TBaseDAO.Salvar(AObjeto: IModel);
 begin
+  Assert(AObjeto <> nil, 'Objeto não foi informado.');
+
+  AObjeto.ValidarDados;
+
 
 end;
 

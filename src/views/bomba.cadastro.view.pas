@@ -3,8 +3,9 @@ unit bomba.cadastro.view;
 interface
 
 uses
-  base.cadastro.view,
   orm.atributes,
+  base.cadastro.view,
+  base.cadastro.view.intf,
 
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
@@ -21,6 +22,7 @@ type
     EdtTanque: TEdit;
     [TCampo('descricao')]
     EdtDescricao: TEdit;
+    procedure FormCreate(Sender: TObject);
   private
 
   public
@@ -29,6 +31,15 @@ type
 
 implementation
 
+uses
+  bomba.model;
+
 {$R *.dfm}
+
+procedure TFrmBombaCadastroView.FormCreate(Sender: TObject);
+begin
+  inherited;
+  FModelClass := TBombaModel;
+end;
 
 end.

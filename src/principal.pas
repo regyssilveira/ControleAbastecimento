@@ -39,20 +39,11 @@ var
 implementation
 
 uses
-  datamodule.conexao,
+  base.controller.intf,
 
-  base.controller,
   abastecimento.controller,
   bomba.controller,
   tanque.controller,
-
-  abastecimento.DAO,
-  bomba.DAO,
-  tanque.DAO,
-
-  abastecimento.model,
-  bomba.model,
-  tanque.model,
 
   abastecimento.consulta.view,
   bomba.consulta.view,
@@ -75,7 +66,7 @@ var
   AbastecimentoController: IController;
 begin
   AbastecimentoController := TAbastecimentoController.Create;
-  AbastecimentoController.ShowConsulta;
+  AbastecimentoController.ShowConsulta(TFrmAbastecimentoConsultaView);
 end;
 
 procedure TFrmPrincipal.ActBombaExecute(Sender: TObject);
@@ -83,7 +74,7 @@ var
   BombaController: IController;
 begin
   BombaController := TBombaController.Create;
-  BombaController.ShowConsulta;
+  BombaController.ShowConsulta(TFrmBombaConsultaView);
 end;
 
 procedure TFrmPrincipal.ActTanqueExecute(Sender: TObject);
@@ -91,7 +82,7 @@ var
   TanqueController: IController;
 begin
   TanqueController := TTanqueController.Create;
-  TanqueController.ShowConsulta;
+  TanqueController.ShowConsulta(TFrmTanqueConsultaView);
 end;
 
 procedure TFrmPrincipal.ActRelatorioExecute(Sender: TObject);

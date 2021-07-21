@@ -4,43 +4,29 @@ interface
 
 uses
   base.model,
-  base.DAO,
+  base.model.intf,
+  base.DAO.intf,
+  base.controller.intf,
   base.consulta.view,
-  base.cadastro.view,
 
   System.Classes,
   System.SysUtils,
   System.Types,
 
+  Vcl.Forms,
+
   FireDAC.Comp.Client;
 
 type
-  IController = interface
-    ['{E3E862B0-0BC6-4F77-93D8-FD0D3745E9D3}']
-    function GetModelo: TBaseModelClass;
-    function GetDAO: IDAO;
-
-    procedure ShowConsulta;
-    procedure Salvar(const AObjeto: TBaseModel);
-    procedure Delete(const ID: string);
-
-    property Modelo: TBaseModelClass read GetModelo;
-    property DAO: IDAO read GetDAO;
-  end;
-
   TBaseController = class(TInterfacedObject, IController)
   private
-    function GetModelo: TBaseModelClass;
     function GetDAO: IDAO;
+    function GetModelo: TBaseModelClass;
   protected
     FDAO: IDAO;
-    FConsultaView: TFrmBaseConsultaViewClass;
-    FModeloClass: TBaseModelClass;
-    FConnection: TFDConnection;
-    procedure ValidarDados(const Objeto: TObject); virtual;
   public
-    procedure ShowConsulta;
-    procedure Salvar(const AObjeto: TBaseModel);
+    procedure ShowConsulta(const AConsultaView: TFrmBaseConsultaViewClass);
+    procedure Salvar(const AObjeto: IModel);
     procedure Delete(const AID: string);
   end;
 
@@ -55,40 +41,28 @@ end;
 
 function TBaseController.GetModelo: TBaseModelClass;
 begin
-  Result := FModeloClass;
-end;
-
-procedure TBaseController.ValidarDados(const Objeto: TObject);
-begin
-  // escrever validações nos filhos
-
+  Result := FDAO.Modelo;
 end;
 
 procedure TBaseController.Delete(const AID: string);
 begin
-  if AID.Trim.IsEmpty then
-    raise Exception.Create('ID do registro não foi informado, não é possível continuar.');
-
   FDAO.Delete(AID);
 end;
 
-procedure TBaseController.Salvar(const AObjeto: TBaseModel);
+procedure TBaseController.Salvar(const AObjeto: IModel);
 begin
-  Assert(AObjeto <> nil, 'Objeto não foi informado.');
-
-  ValidarDados(AObjeto);
   FDAO.Salvar(AObjeto);
 end;
 
-procedure TBaseController.ShowConsulta;
+procedure TBaseController.ShowConsulta(const AConsultaView: TFrmBaseConsultaViewClass);
 var
   FrmConsulta: TFrmBaseConsultaView;
 begin
-  Assert(FConnection <> nil, 'Conexão ao banco de dados não foi informada.');
   Assert(FDAO <> nil, 'Classe ADO não foi informada.');
-  Assert(FModeloClass <> nil, 'Classe do Modelo não foi informada.');
+  Assert(FDAO.Connection <> nil, 'Conexão ao banco de dados não foi informada.');
+  Assert(FDAO.Modelo <> nil, 'Classe do Modelo não foi informada.');
 
-  FrmConsulta := FConsultaView.Create(nil, FConnection, FDAO, FModeloClass);
+  FrmConsulta := AConsultaView.Create(nil, FDAO);
   try
     FrmConsulta.ShowModal;
   finally

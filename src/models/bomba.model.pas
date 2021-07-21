@@ -4,6 +4,7 @@ interface
 
 uses
   base.model,
+  base.model.intf,
   orm.atributes;
 
 type
@@ -14,6 +15,8 @@ type
     FIdTanque: Integer;
     FDescricao: string;
   public
+    procedure ValidarDados; override;
+
     [TCampo('id', 'Id da Bomba', True, False), TPk, TNotNull]
     property Id: Integer read FID write FID;
 
@@ -25,5 +28,13 @@ type
   end;
 
 implementation
+
+{ TBombaModel }
+
+procedure TBombaModel.ValidarDados;
+begin
+  inherited;
+
+end;
 
 end.

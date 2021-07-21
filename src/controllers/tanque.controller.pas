@@ -3,7 +3,9 @@ unit tanque.controller;
 interface
 
 uses
-  base.controller;
+  base.model.intf,
+  base.controller,
+  base.controller.intf;
 
 type
   TTanqueController = class(TBaseController, IController)
@@ -11,7 +13,6 @@ type
 
   public
     constructor Create;
-    procedure ValidarDados(const Objeto: TObject); override;
   end;
 
 implementation
@@ -20,22 +21,15 @@ implementation
 
 uses
   datamodule.conexao,
-
   tanque.model,
-  tanque.DAO,
-  tanque.consulta.view;
+  tanque.DAO;
 
 constructor TTanqueController.Create;
 begin
-  FConnection := DtmConexao.FDConnection1;
-  FModeloClass := TTanqueModel;
-  FDAO := TTanqueDAO.Create(FConnection, FModeloClass);
-  FConsultaView := TFrmTanqueConsultaView;
-end;
-
-procedure TTanqueController.ValidarDados(const Objeto: TObject);
-begin
-
+  FDAO := TTanqueDAO.Create(
+    DtmConexao.FDConnection1,
+    TTanqueModel
+  );
 end;
 
 end.

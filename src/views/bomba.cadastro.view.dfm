@@ -2,7 +2,6 @@ inherited FrmBombaCadastroView: TFrmBombaCadastroView
   Caption = 'Bomba'
   ClientHeight = 284
   ClientWidth = 441
-  Position = poOwnerFormCenter
   ExplicitWidth = 447
   ExplicitHeight = 313
   PixelsPerInch = 96

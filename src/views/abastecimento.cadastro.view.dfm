@@ -2,7 +2,6 @@ inherited FrmAbastecimentoCadastroView: TFrmAbastecimentoCadastroView
   Caption = 'Abastecimento'
   ClientHeight = 288
   ClientWidth = 591
-  Position = poOwnerFormCenter
   ExplicitWidth = 597
   ExplicitHeight = 317
   PixelsPerInch = 96
@@ -95,8 +94,8 @@ inherited FrmAbastecimentoCadastroView: TFrmAbastecimentoCadastroView
         Top = 98
         Width = 121
         Height = 21
-        Date = 44396.000000000000000000
-        Time = 0.563457210650085500
+        Date = 44397.000000000000000000
+        Time = 0.563457210650085400
         TabOrder = 1
       end
       object EdtLitros: TMaskEdit

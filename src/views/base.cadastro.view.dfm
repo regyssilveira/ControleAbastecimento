@@ -36,6 +36,7 @@ object FrmBaseCadastroView: TFrmBaseCadastroView
       Align = alRight
       Caption = 'Gravar'
       TabOrder = 0
+      OnClick = BtnGravarClick
     end
   end
   object PgcCadastro: TPageControl

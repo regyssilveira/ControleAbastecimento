@@ -161,6 +161,12 @@
         <DCCReference Include="classes\orm.utils.pas"/>
         <DCCReference Include="classes\dbgrid.helper.pas"/>
         <DCCReference Include="controllers\base.controller.pas"/>
+        <DCCReference Include="controllers\base.controller.intf.pas"/>
+        <DCCReference Include="views\base.consulta.view.intf.pas"/>
+        <DCCReference Include="classes\auxiliares.classes.pas"/>
+        <DCCReference Include="dao\base.DAO.intf.pas"/>
+        <DCCReference Include="views\base.cadastro.view.intf.pas"/>
+        <DCCReference Include="models\base.model.intf.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

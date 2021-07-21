@@ -3,8 +3,9 @@ unit tanque.cadastro.view;
 interface
 
 uses
-  base.cadastro.view,
   orm.atributes,
+  base.cadastro.view,
+  base.cadastro.view.intf,
 
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
@@ -21,6 +22,7 @@ type
     EdtCombustivel: TComboBox;
     [TCampo('vl_litro')]
     EdtValorLitro: TMaskEdit;
+    procedure FormCreate(Sender: TObject);
   private
 
   public
@@ -29,6 +31,15 @@ type
 
 implementation
 
+uses
+  tanque.model;
+
 {$R *.dfm}
+
+procedure TFrmTanqueCadastroView.FormCreate(Sender: TObject);
+begin
+  inherited;
+  FModelClass := TTAnqueModel;
+end;
 
 end.

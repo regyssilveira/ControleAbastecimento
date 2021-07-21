@@ -3,7 +3,9 @@ unit bomba.controller;
 interface
 
 uses
-  base.controller;
+  base.model.intf,
+  base.controller,
+  base.controller.intf;
 
 type
   TBombaController = class(TBaseController, IController)
@@ -11,7 +13,6 @@ type
 
   public
     constructor Create;
-    procedure ValidarDados(const Objeto: TObject); override;
   end;
 
 implementation
@@ -20,22 +21,15 @@ implementation
 
 uses
   datamodule.conexao,
-
   bomba.model,
-  bomba.DAO,
-  bomba.consulta.view;
+  bomba.DAO;
 
 constructor TBombaController.Create;
 begin
-  FConnection := DtmConexao.FDConnection1;
-  FModeloClass := TBombaModel;
-  FDAO := TBombaDAO.Create(FConnection, FModeloClass);
-  FConsultaView := TFrmBombaConsultaView;
-end;
-
-procedure TBombaController.ValidarDados(const Objeto: TObject);
-begin
-
+  FDAO := TBombaDAO.Create(
+    DtmConexao.FDConnection1,
+    TBombaModel
+  );
 end;
 
 end.

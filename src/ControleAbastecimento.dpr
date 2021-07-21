@@ -27,7 +27,13 @@ uses
   tanque.consulta.view in 'views\tanque.consulta.view.pas' {FrmTanqueConsultaView},
   orm.utils in 'classes\orm.utils.pas',
   dbgrid.helper in 'classes\dbgrid.helper.pas',
-  base.controller in 'controllers\base.controller.pas';
+  base.controller in 'controllers\base.controller.pas',
+  base.controller.intf in 'controllers\base.controller.intf.pas',
+  base.consulta.view.intf in 'views\base.consulta.view.intf.pas',
+  auxiliares.classes in 'classes\auxiliares.classes.pas',
+  base.DAO.intf in 'dao\base.DAO.intf.pas',
+  base.cadastro.view.intf in 'views\base.cadastro.view.intf.pas',
+  base.model.intf in 'models\base.model.intf.pas';
 
 {$R *.res}
 

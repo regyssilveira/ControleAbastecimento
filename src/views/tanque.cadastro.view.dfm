@@ -66,8 +66,8 @@ inherited FrmTanqueCadastroView: TFrmTanqueCadastroView
         Top = 95
         Width = 246
         Height = 21
+        Style = csDropDownList
         TabOrder = 1
-        Text = 'EdtCombustivel'
       end
     end
   end

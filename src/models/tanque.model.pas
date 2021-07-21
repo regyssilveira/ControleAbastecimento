@@ -4,6 +4,7 @@ interface
 
 uses
   base.model,
+  base.model.intf,
   orm.atributes;
 
 type
@@ -14,11 +15,12 @@ type
     FCombustivel: string;
     FValorLitro: Double;
   public
+    procedure ValidarDados; override;
+
     [TCampo('id', 'Id', True), TPk, TNotNull]
     property ID: Integer read FID write FID;
 
-    [TCampo('nome_combustivel', 'Combustível', True, True, '', 20), TNotNull]
-    [TLista('Gasolina, Óleo Diesel')]
+    [TCampo('nome_combustivel', 'Combustível', True, True, '', 20, 'Gasolina;Óleo Diesel'), TNotNull]
     property Combustivel: string read FCombustivel write FCombustivel;
 
     [TCampo('vl_litro', 'Valor Litro', True, True, ',#.000'), TNotNull]
@@ -26,5 +28,13 @@ type
   end;
 
 implementation
+
+{ TTanqueModel }
+
+procedure TTanqueModel.ValidarDados;
+begin
+  inherited;
+
+end;
 
 end.

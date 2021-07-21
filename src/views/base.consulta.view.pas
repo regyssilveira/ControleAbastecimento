@@ -3,9 +3,10 @@ unit base.consulta.view;
 interface
 
 uses
-  base.DAO,
+  base.DAO.intf,
   base.model,
-  base.cadastro.view,
+  base.consulta.view.intf,
+  base.cadastro.view.intf,
 
   FireDAC.Comp.Client,
 
@@ -18,11 +19,6 @@ uses
   dbgrid.helper;
 
 type
-  IConsultaView = interface
-    ['{8E6DFC2A-E491-4840-8594-75D5EEF9B5CB}']
-    function ShowModal: Integer;
-  end;
-
   TFrmBaseConsultaView = class(TForm, IConsultaView)
     DBGridConsulta: TDBGrid;
     DtsConsulta: TDataSource;
@@ -50,16 +46,12 @@ type
     procedure DBGridConsultaDblClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
-    FConnection: TFDConnection;
     FConsultaDAO: IDAO;
-    FConsultaModelClass: TBaseModelClass;
     FCadastroView: ICadastroView;
 
     procedure AbrirTabela;
   public
-    constructor Create(const AOwner: TComponent;
-      const AConnection: TFDConnection; const ADAO: IDAO;
-      const AModelo: TBaseModelClass); overload;
+    constructor Create(const AOwner: TComponent; const ADAO: IDAO); overload;
 
     property CadastroView: ICadastroView read FCadastroView write FCadastroView;
   end;
@@ -70,21 +62,20 @@ implementation
 
 {$R *.dfm}
 
-uses orm.utils;
+uses
+  orm.utils,
+  base.model.intf;
 
 constructor TFrmBaseConsultaView.Create(const AOwner: TComponent;
-  const AConnection: TFDConnection; const ADAO: IDAO;
-  const AModelo: TBaseModelClass);
+  const ADAO: IDAO);
 begin
   inherited Create(AOwner);
 
-  Assert(AConnection <> nil, 'Conexão ao banco de dados não foi informada.');
-  Assert(ADAO <> nil, 'Classe ADO não foi informada.');
-  Assert(AModelo <> nil, 'Classe do Modelo não foi informada.');
+  FConsultaDAO := ADAO;
 
-  FConnection         := AConnection;
-  FConsultaDAO        := ADAO;
-  FConsultaModelClass := AModelo;
+  Assert(FConsultaDAO <> nil, 'Classe ADO não foi informada.');
+  Assert(FConsultaDAO.Connection <> nil, 'Conexão ao banco de dados não foi informada.');
+  Assert(FConsultaDAO.Modelo <> nil, 'Classe do Modelo não foi informada.');
 end;
 
 procedure TFrmBaseConsultaView.DBGridConsultaDblClick(Sender: TObject);
@@ -133,7 +124,6 @@ procedure TFrmBaseConsultaView.FormShow(Sender: TObject);
 begin
   AbrirTabela;
 end;
-
 procedure TFrmBaseConsultaView.ActRegistroNovoExecute(Sender: TObject);
 begin
   CadastroView.ShowCadastro(Self, FConsultaDAO);
@@ -143,7 +133,7 @@ procedure TFrmBaseConsultaView.ActRegistroAlterarExecute(Sender: TObject);
 var
   ObjSelectionado: IModel;
 begin
-  ObjSelectionado := FConsultaModelClass.Create;
+  ObjSelectionado := FConsultaDAO.Modelo.Create;
   ObjSelectionado.BindObjectFromFields(DtsConsulta.DataSet.Fields);
 
   CadastroView.ShowAlteracao(Self, FConsultaDAO, ObjSelectionado);

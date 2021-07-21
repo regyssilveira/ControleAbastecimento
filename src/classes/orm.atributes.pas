@@ -22,10 +22,12 @@ type
     FDisplayText: string;
     FMascara: string;
     FTamanho: Integer;
+    FLista: string;
   public
     constructor Create(const AFieldName: string; const ADisplayText: string = '';
       const AVisivel: Boolean = True; const AEditavel: Boolean = True;
-      const AMascara: string = ''; const ATamanho: Integer = 0);
+      const AMascara: string = ''; const ATamanho: Integer = 0;
+      const ALista: string = '');
 
     property FieldName: string read FFieldName write FFieldName;
     property DisplayText: string read FDisplayText write FDisplayText;
@@ -33,13 +35,6 @@ type
     property Tamanho: Integer read FTamanho write FTamanho;
     property Visivel: Boolean read FVisivel write FVisivel;
     property Editavel: Boolean read FEditavel write FEditavel;
-  end;
-
-  TLista = class(TCustomAttribute)
-  private
-    FLista: string;
-  public
-    constructor Create(const Alista: string);
     property Lista: string read FLista write FLista;
   end;
 
@@ -50,13 +45,6 @@ type
   end;
 
 implementation
-
-{ TLista }
-
-constructor TLista.Create(const Alista: string);
-begin
-  FLista := Alista;
-end;
 
 { Tabela }
 
@@ -69,7 +57,7 @@ end;
 
 constructor TCampo.Create(const AFieldName, ADisplayText: string;
   const AVisivel, AEditavel: Boolean; const AMascara: string;
-  const ATamanho: Integer);
+  const ATamanho: Integer; const ALista: string);
 begin
   FFieldName   := AFieldName;
   FDisplayText := ADisplayText;
@@ -77,6 +65,7 @@ begin
   FTamanho     := ATamanho;
   FVisivel     := AVisivel;
   FEDitavel    := AEditavel;
+  FLista       := ALista;
 end;
 
 end.
