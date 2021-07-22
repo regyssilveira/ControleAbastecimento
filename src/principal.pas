@@ -49,7 +49,9 @@ uses
   bomba.consulta.view,
   tanque.consulta.view,
 
-  abastecimento.DAO;
+  abastecimento.DAO,
+
+  abastecimento.relatorio;
 
 {$R *.dfm}
 
@@ -89,7 +91,7 @@ end;
 
 procedure TFrmPrincipal.ActRelatorioExecute(Sender: TObject);
 begin
-  //
+  TFrmAbastecimentosRelatorio.PreviewAbastecimentos;
 end;
 
 end.

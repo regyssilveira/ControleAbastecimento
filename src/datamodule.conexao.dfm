@@ -5,6 +5,9 @@ object DtmConexao: TDtmConexao
   Width = 409
   object FDConnection1: TFDConnection
     Params.Strings = (
+      
+        'Database=D:\projetos\ControleAbastecimento\bin\database\abasteci' +
+        'mentos.sqlite'
       'DriverID=SQLite')
     ConnectedStoredUsage = []
     LoginPrompt = False

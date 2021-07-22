@@ -33,7 +33,8 @@ uses
   auxiliares.classes in 'classes\auxiliares.classes.pas',
   base.DAO.intf in 'dao\base.DAO.intf.pas',
   base.cadastro.view.intf in 'views\base.cadastro.view.intf.pas',
-  base.model.intf in 'models\base.model.intf.pas';
+  base.model.intf in 'models\base.model.intf.pas',
+  abastecimento.relatorio in 'reports\abastecimento.relatorio.pas' {FrmAbastecimentosRelatorio};
 
 {$R *.res}
 

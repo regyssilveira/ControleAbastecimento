@@ -167,6 +167,10 @@
         <DCCReference Include="dao\base.DAO.intf.pas"/>
         <DCCReference Include="views\base.cadastro.view.intf.pas"/>
         <DCCReference Include="models\base.model.intf.pas"/>
+        <DCCReference Include="reports\abastecimento.relatorio.pas">
+            <Form>FrmAbastecimentosRelatorio</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
