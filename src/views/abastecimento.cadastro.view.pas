@@ -23,19 +23,18 @@ type
     [TCampo('id')]
     EdtId: TEdit;
     [TCampo('id_bomba')]
-    EdtBomba: TComboBox;
+    EdtBomba: TEdit;
     [TCampo('dt_abastecimento')]
     EdtDataLancamento: TDateTimePicker;
     [TCampo('qt_litros')]
     EdtLitros: TMaskEdit;
-    [TCampo('vl_unitario')]
-    EdtVlrUnitario: TMaskEdit;
     [TCampo('vl_abastecimento')]
     EdtValorTotal: TMaskEdit;
+    [TCampo('vl_unitario')]
+    EdtValorUnitario: TMaskEdit;
     [TCampo('vl_imposto')]
     EdtValorImposto: TMaskEdit;
     procedure FormCreate(Sender: TObject);
-
   private
 
   public

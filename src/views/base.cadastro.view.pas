@@ -25,12 +25,13 @@ type
   private
     FAlteracao: Boolean;
     FDAO: IDAO;
+    FID: Integer;
     FObjeto: IModel;
   protected
     FModelClass: TBaseModelClass;
   public
     function ShowCadastro(AOwner: TComponent; ADAO: IDAO): Boolean;
-    function ShowAlteracao(AOwner: TComponent; ADAO: IDAO; AObjeto: IModel): Boolean;
+    function ShowAlteracao(AOwner: TComponent; ADAO: IDAO; AObjeto: IModel; AID: Integer): Boolean;
 
     property DAO: IDAO read FDAO;
   end;
@@ -49,16 +50,18 @@ begin
   Self.FAlteracao := False;
   Self.FDAO       := ADAO;
   Self.FObjeto    := nil;
+  Self.FID        := 0;
 
   Result := Self.ShowModal = mrOk;
 end;
 
 function TFrmBaseCadastroView.ShowAlteracao(AOwner: TComponent; ADAO: IDAO;
-  AObjeto: IModel): Boolean;
+  AObjeto: IModel; AID: Integer): Boolean;
 begin
   Self.FAlteracao := True;
   Self.FDAO       := ADAO;
   Self.FObjeto    := AObjeto;
+  Self.FID        := AID;
 
   Result := Self.ShowModal = mrOk;
 end;
@@ -92,9 +95,32 @@ begin
 end;
 
 procedure TFrmBaseCadastroView.BtnGravarClick(Sender: TObject);
+var
+  OObjSalvar: TBaseModel;
 begin
-  if True then
+  if Application.MessageBox(
+    'Deseja gravar os dados digitados?',
+    'Salvar',
+    MB_ICONQUESTION + MB_YESNO + MB_DEFBUTTON2
+  ) = ID_YES then
+  begin
+    OObjSalvar := FModelClass.Create;
+    try
+      OObjSalvar.BingObjectFromForm(Self);
 
+      if FAlteracao then
+        FDAO.Atualizar(FID, OObjSalvar)
+      else
+        FDAO.Salvar(OObjSalvar);
+    finally
+      OObjSalvar.Free;
+    end;
+
+    Self.Close;
+    Self.ModalResult := mrOK;
+
+    ShowMessage('Item gravado com sucesso!');
+  end;
 end;
 
 end.

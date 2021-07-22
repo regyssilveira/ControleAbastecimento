@@ -15,8 +15,8 @@ type
     function GetDAO: IDAO;
 
     procedure ShowConsulta(const AConsultaView: TFrmBaseConsultaViewClass);
-    procedure Salvar(const AObjeto: IModel);
-    procedure Delete(const ID: string);
+    procedure Salvar(const AObjeto: TBaseModel);
+    procedure Delete(const ID: Integer);
 
     property Modelo: TBaseModelClass read GetModelo;
     property DAO: IDAO read GetDAO;

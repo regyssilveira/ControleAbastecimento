@@ -126,7 +126,8 @@ begin
 end;
 procedure TFrmBaseConsultaView.ActRegistroNovoExecute(Sender: TObject);
 begin
-  CadastroView.ShowCadastro(Self, FConsultaDAO);
+  if CadastroView.ShowCadastro(Self, FConsultaDAO) then
+    AbrirTabela;
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroAlterarExecute(Sender: TObject);
@@ -136,7 +137,15 @@ begin
   ObjSelectionado := FConsultaDAO.Modelo.Create;
   ObjSelectionado.BindObjectFromFields(DtsConsulta.DataSet.Fields);
 
-  CadastroView.ShowAlteracao(Self, FConsultaDAO, ObjSelectionado);
+  if CadastroView.ShowAlteracao(
+    Self,
+    FConsultaDAO,
+    ObjSelectionado,
+    DtsConsulta.DataSet.FieldByName(FConsultaDAO.GetPkField).AsInteger
+  ) then
+  begin
+    AbrirTabela;
+  end;
 end;
 
 procedure TFrmBaseConsultaView.ActRegistroApagarExecute(Sender: TObject);
@@ -147,7 +156,7 @@ begin
     MB_ICONQUESTION + MB_YESNO + MB_DEFBUTTON2) = ID_YES then
   begin
     FConsultaDAO.Delete(
-      DtsConsulta.DataSet.FieldByName(FConsultaDAO.GetPkField).AsString
+      DtsConsulta.DataSet.FieldByName(FConsultaDAO.GetPkField).AsInteger
     );
 
     AbrirTabela;

@@ -17,7 +17,7 @@ type
   public
     procedure ValidarDados; override;
 
-    [TCampo('id', 'Id', True), TPk, TNotNull]
+    [TCampo('id', 'Id', True, False, '', 0, '', True), TNotNull]
     property ID: Integer read FID write FID;
 
     [TCampo('nome_combustivel', 'Combustível', True, True, '', 20, 'Gasolina;Óleo Diesel'), TNotNull]

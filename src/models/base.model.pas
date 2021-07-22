@@ -13,6 +13,9 @@ type
   TBaseModel = class(TInterfacedObject, IModel)
   private
     class function GetListaComponentesForm(const AForm: TForm): TStringList;
+    function SetValorDefaultSeVazio(const ATipo: string;
+      const AValor: Variant): Variant;
+    function StrToVarTipo(const AValor: string; ATipo: String): Variant;
   public
     procedure ValidarDados; virtual;
 
@@ -32,6 +35,7 @@ uses
 
   System.SysUtils,
   System.RTTI,
+  System.Variants,
 
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
@@ -70,6 +74,8 @@ begin
   finally
     OContexto.Free;
   end;
+
+  Assert(Result.Count > 0, 'Nenhum componente do form foi configurado para o binding.');
 end;
 
 procedure TBaseModel.BindObjectFromFields(const AFields: TFields);
@@ -118,10 +124,6 @@ var
 begin
   ListaComponentesForm := GetListaComponentesForm(AForm);
   try
-    if ListaComponentesForm.Count <= 0 then
-      Exit;
-
-    // preencher campos conforme a propriedade do objeto
     OTipo := OContexto.GetType(Self.ClassInfo);
     try
       for OPropriedade in OTipo.GetProperties do
@@ -140,13 +142,18 @@ begin
                   (Componente as TEdit).Text := OPropriedade.GetValue(Self).ToString
                 else
                 if (Componente is TComboBox) then
-                  (Componente as TComboBox).ItemIndex := (Componente as TComboBox).Items.IndexOf(OPropriedade.GetValue(Self).ToString)
+                begin
+                  if (Componente as TComboBox).Items.Count > 0 then
+                    (Componente as TComboBox).ItemIndex := (Componente as TComboBox).Items.IndexOf(OPropriedade.GetValue(Self).ToString)
+                  else
+                    (Componente as TComboBox).Text := OPropriedade.GetValue(Self).ToString;
+                end
                 else
                 if (Componente is TMaskEdit) then
                   (Componente as TMaskEdit).Text := OPropriedade.GetValue(Self).ToString
                 else
                 if (Componente is TDateTimePicker) then
-                  (Componente as TDateTimePicker).DateTime := OPropriedade.GetValue(Self).AsVariant;
+                  (Componente as TDateTimePicker).Date := OPropriedade.GetValue(Self).AsVariant;
               end;
             end;
           end;
@@ -160,9 +167,110 @@ begin
   end;
 end;
 
-procedure TBaseModel.BingObjectFromForm(const AForm: TForm);
+function TBaseModel.SetValorDefaultSeVazio(const ATipo: string;
+  const AValor: Variant): Variant;
 begin
+  Result := AValor;
 
+  if VarIsNull(Result) then
+  begin
+    if ATipo.ToUpper.Equals('INTEGER') then
+      Result := 0
+    else
+    if ATipo.ToUpper.Equals('TDATE') then
+      Result := 0
+    else
+    if ATipo.ToUpper.Equals('TDATETIME') then
+      Result := 0.0
+    else
+    if ATipo.ToUpper.Equals('DOUBLE') then
+      Result := '0'
+    else
+      Result := '';
+  end;
+end;
+
+function TBaseModel.StrToVarTipo(const AValor: string; ATipo: String): Variant;
+begin
+  Result := AValor;
+  if ATipo.ToUpper.Equals('INTEGER') then
+    Result := StrToIntDef(VarToStr(Result), 0)
+  else
+  if ATipo.ToUpper.Equals('TDATE') then
+    Result := StrToDateDef(VarToStr(Result), 0)
+  else
+  if ATipo.ToUpper.Equals('TDATETIME') then
+    Result := StrToDateTimeDef(VarToStr(Result), 0.0)
+  else
+  if ATipo.ToUpper.Equals('DOUBLE') then
+    Result := StrToFloatDef(VarToStr(Result).Replace('.', ''), 0.00);
+end;
+
+procedure TBaseModel.BingObjectFromForm(const AForm: TForm);
+var
+  OTipo: TRttiType;
+  OContexto: TRttiContext;
+  OPropriedade: TRttiProperty;
+  OAtributo: TCustomAttribute;
+  Componente: TComponent;
+  ListaComponentesForm: TStringList;
+  CampoForm: string;
+  ValorDigitado: Variant;
+  Valor: TValue;
+  TipoPropriedade: string;
+begin
+  ListaComponentesForm := GetListaComponentesForm(AForm);
+  try
+    OTipo := OContexto.GetType(Self.ClassInfo);
+    try
+      for OPropriedade in OTipo.GetProperties do
+      begin
+        ValorDigitado   := null;
+        TipoPropriedade := OPropriedade.PropertyType.Name;
+
+        for OAtributo in OPropriedade.GetAttributes do
+        begin
+          ValorDigitado := Null;
+
+          if OAtributo is TCampo then
+          begin
+            CampoForm := ListaComponentesForm.Values[(OAtributo as TCampo).FieldName];
+            if not CampoForm.Trim.IsEmpty then
+            begin
+              Componente := AForm.FindComponent(CampoForm);
+              if Assigned(Componente) then
+              begin
+                if (Componente is TEdit) then
+                  ValorDigitado := StrToVarTipo((Componente as TEdit).Text, TipoPropriedade)
+                else
+                if (Componente is TComboBox) then
+                begin
+                  ValorDigitado := (Componente as TComboBox).Items[(Componente as TComboBox).ItemIndex];
+                  ValorDigitado := StrToVarTipo(ValorDigitado, TipoPropriedade)
+                end
+                else
+                if (Componente is TMaskEdit) then
+                  ValorDigitado := StrToVarTipo((Componente as TMaskEdit).Text, TipoPropriedade)
+                else
+                if (Componente is TDateTimePicker) then
+                  ValorDigitado := (Componente as TDateTimePicker).DateTime;
+              end;
+            end;
+
+            ValorDigitado := SetValorDefaultSeVazio(TipoPropriedade, ValorDigitado);
+            Valor         := TValue.FromVariant(ValorDigitado);
+
+            OPropriedade.SetValue(Pointer(Self), Valor);
+            Break;
+          end;
+        end;
+      end;
+    finally
+      OContexto.Free;
+    end;
+  finally
+    ListaComponentesForm.Free;
+  end;
 end;
 
 class procedure TBaseModel.ConfigurarForm(const AForm: TForm);

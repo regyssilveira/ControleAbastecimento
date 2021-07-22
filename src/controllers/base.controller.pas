@@ -26,8 +26,8 @@ type
     FDAO: IDAO;
   public
     procedure ShowConsulta(const AConsultaView: TFrmBaseConsultaViewClass);
-    procedure Salvar(const AObjeto: IModel);
-    procedure Delete(const AID: string);
+    procedure Salvar(const AObjeto: TBaseModel);
+    procedure Delete(const AID: Integer);
   end;
 
 implementation
@@ -44,12 +44,12 @@ begin
   Result := FDAO.Modelo;
 end;
 
-procedure TBaseController.Delete(const AID: string);
+procedure TBaseController.Delete(const AID: Integer);
 begin
   FDAO.Delete(AID);
 end;
 
-procedure TBaseController.Salvar(const AObjeto: IModel);
+procedure TBaseController.Salvar(const AObjeto: TBaseModel);
 begin
   FDAO.Salvar(AObjeto);
 end;

@@ -23,12 +23,14 @@ type
     FMascara: string;
     FTamanho: Integer;
     FLista: string;
+    FPk: Boolean;
   public
     constructor Create(const AFieldName: string; const ADisplayText: string = '';
       const AVisivel: Boolean = True; const AEditavel: Boolean = True;
       const AMascara: string = ''; const ATamanho: Integer = 0;
-      const ALista: string = '');
+      const ALista: string = ''; const APk: Boolean = False);
 
+    property Pk: Boolean read FPk write FPk;
     property FieldName: string read FFieldName write FFieldName;
     property DisplayText: string read FDisplayText write FDisplayText;
     property Mascara: string read FMascara write FMascara;
@@ -36,9 +38,6 @@ type
     property Visivel: Boolean read FVisivel write FVisivel;
     property Editavel: Boolean read FEditavel write FEditavel;
     property Lista: string read FLista write FLista;
-  end;
-
-  TPk = class(TCustomAttribute)
   end;
 
   TNotNull = class(TCustomAttribute)
@@ -57,8 +56,9 @@ end;
 
 constructor TCampo.Create(const AFieldName, ADisplayText: string;
   const AVisivel, AEditavel: Boolean; const AMascara: string;
-  const ATamanho: Integer; const ALista: string);
+  const ATamanho: Integer; const ALista: string; const APk: Boolean);
 begin
+  FPk          := APk;
   FFieldName   := AFieldName;
   FDisplayText := ADisplayText;
   FMascara     := AMascara;

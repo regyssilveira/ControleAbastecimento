@@ -25,8 +25,8 @@ type
     procedure ActAbastecimentoExecute(Sender: TObject);
     procedure ActTanqueExecute(Sender: TObject);
     procedure ActBombaExecute(Sender: TObject);
-    procedure ActRelatorioExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure ActRelatorioExecute(Sender: TObject);
   private
 
   public
@@ -47,7 +47,9 @@ uses
 
   abastecimento.consulta.view,
   bomba.consulta.view,
-  tanque.consulta.view;
+  tanque.consulta.view,
+
+  abastecimento.DAO;
 
 {$R *.dfm}
 
@@ -87,8 +89,7 @@ end;
 
 procedure TFrmPrincipal.ActRelatorioExecute(Sender: TObject);
 begin
-
-//
+  //
 end;
 
 end.
